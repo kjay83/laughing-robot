@@ -20,4 +20,5 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('employe.urls')),
+    path('gmax_km/', include('gmax_km.urls')),
 ]

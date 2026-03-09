@@ -1,0 +1,44 @@
+from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse
+
+# LOGS
+def index(request):
+    msg = f"liste logs acuueils."
+    return HttpResponse(msg)
+
+def detail_logs(request, log_id):
+    msg = f"detail logs {log_id}"
+    return HttpResponse(msg)
+
+def ajouter_logs(request):
+    msg = f"ajouter_logs"
+    return HttpResponse(msg)
+
+def modifier_logs(request,log_id):
+    msg = f"modifier log {log_id}"
+    return HttpResponse(msg)
+
+def supprimer_logs(request,log_id):
+    msg = f"supprimer log {log_id}"
+    return HttpResponse(msg)
+
+# VEHICULES
+def liste_vehicules(request):
+    msg = f"liste VEHICULE"
+    return HttpResponse(msg)
+
+def detail_vehicules(request, vehicule_id):
+    msg = f"detail vehicules {vehicule_id}"
+    return HttpResponse(msg)
+
+def ajouter_vehicules(request):
+    msg = f"ajouter_vehicules"
+    return HttpResponse(msg)
+
+def modifier_vehicules(request,vehicule_id):
+    msg = f"modifier vehicules {vehicule_id}"
+    return HttpResponse(msg)
+
+def supprimer_vehicules(request,vehicule_id):
+    msg = f"supprimer vehicules {vehicule_id}"
+    return HttpResponse(msg)
