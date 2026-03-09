@@ -1,5 +1,8 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
+from django.template import loader
+
+from .models import Vehicule, Log
 
 # LOGS
 def index(request):
@@ -24,8 +27,13 @@ def supprimer_logs(request,log_id):
 
 # VEHICULES
 def liste_vehicules(request):
-    msg = f"liste VEHICULE"
-    return HttpResponse(msg)
+    liste_vehicules = Vehicule.objects.order_by("-immatriculation")
+    
+    #template = loader.get_template("gmax_km/liste_vehicules.html")
+    context = {"liste_vehicules": liste_vehicules}
+    #return HttpResponse(template.render(context, request))
+    return render(request, "gmax_km/liste_vehicules.html", context)
+    
 
 def detail_vehicules(request, vehicule_id):
     msg = f"detail vehicules {vehicule_id}"

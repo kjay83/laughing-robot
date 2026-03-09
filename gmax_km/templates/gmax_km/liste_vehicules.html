@@ -1,0 +1,30 @@
+{% extends "gmax_km/base.html" %}
+
+
+{% block content %}
+<div class="w-full bg-base-200">
+    <div class="mb-4">
+        <a href="{% url 'gmax_km:ajouter_vehicules_url' %}" class="btn btn-primary w-full">Ajouter un vehicule</a>
+    </div>
+
+    <div class="space-y-4 w-full">
+        {% for vehic in liste_vehicules %}
+        <div class="p-4 bg-base-100 rounded-lg w-full flex justify-between items-center">
+            <div class="space-y-2">
+                <p class="font-bold text-lg">{{vehic.immatriculation}}</p>
+                <p class="badge badge-soft badge-primary">{{vehic.marque}}</p>
+                <p class="badge badge-soft badge-primary">{{vehic.modele}}</p>
+                <div class="flex gap-2">
+                    <p class="badge badge-soft badge-primary">Fabrication : {{vehic.annee_fabrication}}</p>
+                    <p class="badge badge-dash badge-primary">Acquisition : {{vehic.date_acquisition}} </p>
+                </div>
+            </div>
+            <div class="space-x-2">
+                <a href="{% url 'gmax_km:modifier_vehicules_url' vehic.id %}" class="btn btn-primary btn-sm">Modifier</a>
+                <a href="{% url 'gmax_km:supprimer_vehicules_url' vehic.id %}" class="btn btn-primary btn-soft btn-sm">Supprimer</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
