@@ -1,0 +1,14 @@
+{% extends "gmax_km/base.html" %}
+
+
+{% block content %}    
+    <form method="POST" class="space-y-4">
+        {% csrf_token %}
+        {{form.immatriculation.label}}{{form.immatriculation}}
+        {{form.marque.label}}{{form.marque}}
+        {{form.modele.label}} {{form.modele}}
+        {{form.annee_fabrication.label}}{{form.annee_fabrication}}
+        {{form.date_acquisition.label}}{{form.date_acquisition}}
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+    </form>
+{% endblock %}

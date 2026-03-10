@@ -1,8 +1,9 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, Http404
 from django.template import loader
 
 from .models import Vehicule, Log
+from .forms import VehiculeForm
 
 # LOGS
 def index(request):
@@ -27,25 +28,26 @@ def supprimer_logs(request,log_id):
 
 # VEHICULES
 def liste_vehicules(request):
-    liste_vehicules = Vehicule.objects.order_by("-immatriculation")
-    
-    #template = loader.get_template("gmax_km/liste_vehicules.html")
+    liste_vehicules = Vehicule.objects.order_by("-immatriculation")    
     context = {"liste_vehicules": liste_vehicules}
-    #return HttpResponse(template.render(context, request))
     return render(request, "gmax_km/liste_vehicules.html", context)
     
 
 def detail_vehicules(request, vehicule_id):
-    msg = f"detail vehicules {vehicule_id}"
-    return HttpResponse(msg)
+    vehic = get_object_or_404(Vehicule,id=vehicule_id)
+    return render(request, 'gmax_km/detail_vehicules.html' , {'vehic' : vehic})
 
 def ajouter_vehicules(request):
     msg = f"ajouter_vehicules"
     return HttpResponse(msg)
 
 def modifier_vehicules(request,vehicule_id):
-    msg = f"modifier vehicules {vehicule_id}"
-    return HttpResponse(msg)
+    vehic = get_object_or_404(Vehicule,id=vehicule_id)
+    form = VehiculeForm(request.POST or None, instance=vehic)
+    if form.is_valid() :
+        form.save()
+        return redirect('gmax_km:liste_vehicules_url')
+    return render(request, 'gmax_km/formulaire_vehicule.html' , {'form' : form})
 
 def supprimer_vehicules(request,vehicule_id):
     msg = f"supprimer vehicules {vehicule_id}"

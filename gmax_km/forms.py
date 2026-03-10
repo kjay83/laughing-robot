@@ -4,7 +4,7 @@ from .models import Vehicule
 class VehiculeForm(forms.ModelForm):
     class Meta:
         model = Vehicule
-        fields = ["immatriculation","marque","modele","annee_fabrication","annee_acquisition"]
+        fields = ["immatriculation","marque","modele","annee_fabrication","date_acquisition"]
         widgets = {
             'immatriculation' : forms.TextInput(attrs= {
                 'class' : 'input w-full',
@@ -18,12 +18,15 @@ class VehiculeForm(forms.ModelForm):
                 'class' : 'input w-full',
                 'placeholder': 'modele',
             }),
-            'annee_fabrication' : forms.DateField(attrs= {
+            'annee_fabrication' : forms.NumberInput(attrs= {
                 'class' : 'input w-full',
                 'placeholder': 'annee_fabrication"',
             }),
-            'annee_acquisition' : forms.DateField(attrs= {
+            'date_acquisition' : forms.DateInput(
+                format='%Y-%m-%d',
+                attrs= {
                 'class' : 'input w-full',
-                'placeholder': 'annee_acquisition"',
-            })
+                'type': 'date',
+                }
+            )
         }
