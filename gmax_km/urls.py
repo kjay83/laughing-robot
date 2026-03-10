@@ -6,6 +6,7 @@ app_name= "gmax_km"
 urlpatterns = [
     #LOGS URLS
     path("",views.index,name="liste_logs_url"),
+    path("vue_tableau",views.index_tableau_logs,name="tableau_logs_url"),
     path('<int:log_id>', views.detail_logs, name="detail_logs_url"),
     path('ajouter/', views.ajouter_logs, name="ajouter_logs_url"),
     path('<int:log_id>/modifier', views.modifier_logs, name="modifier_logs_url"),

@@ -11,6 +11,11 @@ def index(request):
     context = {"logs": liste_logs}
     return render(request, "gmax_km/logs/liste_logs.html", context)
 
+def index_tableau_logs(request):
+    tableau_logs = Log.objects.order_by("-date_log")    
+    context = {"logs": tableau_logs}
+    return render(request, "gmax_km/logs/tableau_logs.html", context)
+
 def detail_logs(request, log_id):
     log = get_object_or_404(Log,id=log_id)
     return render(request, 'gmax_km/logs/detail_logs.html' , {'log' : log})
