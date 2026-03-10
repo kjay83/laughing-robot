@@ -31,19 +31,19 @@ def supprimer_logs(request,log_id):
 def liste_vehicules(request):
     liste_vehicules = Vehicule.objects.order_by("immatriculation")    
     context = {"liste_vehicules": liste_vehicules}
-    return render(request, "gmax_km/liste_vehicules.html", context)
+    return render(request, "gmax_km/vehicules/liste_vehicules.html", context)
     
 
 def detail_vehicules(request, vehicule_id):
     vehic = get_object_or_404(Vehicule,id=vehicule_id)
-    return render(request, 'gmax_km/detail_vehicules.html' , {'vehic' : vehic})
+    return render(request, 'gmax_km/vehicules/detail_vehicules.html' , {'vehic' : vehic})
 
 def ajouter_vehicules(request):
     form = VehiculeForm(request.POST or None)
     if form.is_valid() :
         form.save()
         return redirect('gmax_km:liste_vehicules_url')
-    return render(request, 'gmax_km/formulaire_vehicules.html' , {'form' : form})
+    return render(request, 'gmax_km/vehicules/formulaire_vehicules.html' , {'form' : form})
 
 def modifier_vehicules(request,vehicule_id):
     vehic = get_object_or_404(Vehicule,id=vehicule_id)
@@ -51,11 +51,11 @@ def modifier_vehicules(request,vehicule_id):
     if form.is_valid() :
         form.save()
         return redirect('gmax_km:detail_vehicules_url',vehicule_id=vehic.id)
-    return render(request, 'gmax_km/formulaire_vehicules.html' , {'form' : form})
+    return render(request, 'gmax_km/vehicules/formulaire_vehicules.html' , {'form' : form})
 
 def supprimer_vehicules(request,vehicule_id):
     vehic = get_object_or_404(Vehicule,id=vehicule_id)
     if request.method == "POST":
         vehic.delete()
         return redirect('gmax_km:liste_vehicules_url')
-    return render(request, 'gmax_km/confirmer_suppression_vehicules.html' , {'vehic' : vehic})
+    return render(request, 'gmax_km/vehicules/confirmer_suppression_vehicules.html' , {'vehic' : vehic})
