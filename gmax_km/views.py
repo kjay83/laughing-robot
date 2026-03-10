@@ -53,5 +53,8 @@ def modifier_vehicules(request,vehicule_id):
     return render(request, 'gmax_km/formulaire_vehicules.html' , {'form' : form})
 
 def supprimer_vehicules(request,vehicule_id):
-    msg = f"supprimer vehicules {vehicule_id}"
-    return HttpResponse(msg)
+    vehic = get_object_or_404(Vehicule,id=vehicule_id)
+    if request.method == "POST":
+        vehic.delete()
+        return redirect('gmax_km:liste_vehicules_url')
+    return render(request, 'gmax_km/confirmer_suppression_vehicules.html' , {'vehic' : vehic})
