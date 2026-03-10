@@ -3,7 +3,10 @@
 
 {% block content %}    
     <form method="POST" class="space-y-4 flex flex-col">
-        <span class="text-center">Etes-vous sûr de vouloir supprimer <strong>{{vehic.immatriculation}}</strong></span>
+        <span class="text-center">
+            Etes-vous sûr de vouloir supprimer le vehicule <i>{{vehic.immatriculation}}</i>
+            <strong>ATTENTION: tous les logs correspondants seront supprimes!</strong>
+        </span>
         {% csrf_token %}
         <button type="submit" class="btn btn-error">Oui</button>
         <a href="{% url 'gmax_km:liste_vehicules_url' %}" class="btn btn-primary w-full">Annuler</a>

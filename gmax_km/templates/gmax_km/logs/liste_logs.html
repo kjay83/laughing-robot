@@ -1,0 +1,31 @@
+{% extends "gmax_km/base.html" %}
+
+
+{% block content %}
+<div class="w-full bg-base-200">
+    <div class="mb-2">
+        <p class="font-bold text-lg">LISTE DES LOGS</p>
+    </div>
+    <div class="mb-4">
+        <a href="{% url 'gmax_km:ajouter_logs_url' %}" class="btn btn-primary w-full">Ajouter un log</a>
+    </div>
+
+    <div class="space-y-4 w-full">
+        {% for log in logs %}
+        <div class="p-4 bg-base-100 rounded-lg w-full flex justify-between items-center">
+            <div class="space-x-2">
+                <p class="badge badge-soft badge-secondary">Entrée N° {{log.id}}</p>
+                <p class="font-bold text-lg">{{log.vehicule.immatriculation}}</p>
+                <p class="badge badge badge-primary">{{log.date_log}}</p>
+                <p class="badge badge-accent">{{log.km}} KM</p>
+            </div>
+            <div class="space-x-2">
+                <a href="{% url 'gmax_km:detail_logs_url' log.id %}" class="btn btn-primary btn-sm">Détails</a>
+                <a href="{% url 'gmax_km:modifier_logs_url' log.id %}" class="btn btn-primary btn-sm">Modifier</a>
+                <a href="{% url 'gmax_km:supprimer_logs_url' log.id %}" class="btn btn-primary btn-soft btn-sm">Supprimer</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

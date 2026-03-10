@@ -1,0 +1,15 @@
+{% extends "gmax_km/base.html" %}
+
+
+{% block content %}    
+    <form method="POST" class="space-y-4">
+        {% csrf_token %}
+        {{form.date_log}}
+        {{form.immatriculation}}
+        {{form.km}}
+        <div>
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+            <a href="{% url 'gmax_km:liste_logs_url' %}" class="btn btn-accent">Revenir à la liste</a>
+        </div>
+    </form>
+{% endblock %}

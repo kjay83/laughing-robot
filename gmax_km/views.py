@@ -7,12 +7,13 @@ from .forms import VehiculeForm
 
 # LOGS
 def index(request):
-    msg = f"liste logs acuueils."
-    return HttpResponse(msg)
+    liste_logs = Log.objects.order_by("-date_log")    
+    context = {"logs": liste_logs}
+    return render(request, "gmax_km/logs/liste_logs.html", context)
 
 def detail_logs(request, log_id):
-    msg = f"detail logs {log_id}"
-    return HttpResponse(msg)
+    log = get_object_or_404(Log,id=log_id)
+    return render(request, 'gmax_km/logs/detail_logs.html' , {'log' : log})
 
 def ajouter_logs(request):
     msg = f"ajouter_logs"

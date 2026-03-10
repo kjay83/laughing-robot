@@ -1,0 +1,35 @@
+{% extends "gmax_km/base.html" %}
+
+
+{% block content %}
+<div class="w-full bg-base-200">
+    <div class="mb-4">
+        <a href="{% url 'gmax_km:liste_logs_url' %}" class="btn btn-primary w-full">Liste des logs</a>
+    </div>
+    <div class="mb-2">
+        <p class="font-bold text-lg">LOG N° {{log.id}}</p>
+    </div>
+
+    <div class="space-y-4 w-full">
+        <div class="p-4 bg-base-100 rounded-lg w-full flex justify-between items-center">
+            <div class="space-x-2">
+                <p class="font-bold text-lg">{{log.vehicule.immatriculation}}</p>
+                <p class="badge badge-primary">{{log.date_log}}</p>
+                <p class="badge badge-soft badge-accent">{{log.km}} KM</p>
+                <br>
+                <p class="badge badge-dash badge-primary">Crée le : {{log.created_at}}</p>
+                <p class="badge badge-dash badge-primary">Mis à jour le : {{log.update_at}} </p>
+                {% if log.updated_by %}
+                    <span class="badge badge-dash badge-primary">👤 {{ log.updated_by.username }}</span>
+                {% else %}
+                    <span class="badge badge-ghost italic text-gray-500">🌍 Visiteur public</span>
+                {% endif %}
+            </div>
+            <div class="space-x-2">
+                <a href="{% url 'gmax_km:modifier_logs_url' log.id %}" class="btn btn-primary btn-sm">Modifier</a>
+                <a href="{% url 'gmax_km:supprimer_logs_url' log.id %}" class="btn btn-primary btn-soft btn-sm">Supprimer</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
