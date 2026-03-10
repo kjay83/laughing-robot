@@ -5,7 +5,14 @@
 {% block content %}
 <div class="w-full bg-base-200">
     <div class="mb-2">
-        <p class="font-bold text-lg">LISTE DES LOGS</p>
+        <p class="font-bold text-lg">LISTE DES LOGS (VUE LISTE)</p>
+        <div class="join border border-base-300">
+            <!-- Icône Tableau -->
+            <a href="{% url 'gmax_km:tableau_logs_url' %}" 
+            class="join-item btn btn-sm btn-primary">
+            📊 Tableau
+            </a>
+        </div>
     </div>
     <div class="mb-4">
         <a href="{% url 'gmax_km:ajouter_logs_url' %}" class="btn btn-primary w-full">Ajouter un log</a>

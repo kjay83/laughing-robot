@@ -13,10 +13,16 @@ def index(request):
     return render(request, "gmax_km/logs/liste_logs.html", context)
 
 def index_tableau_logs(request):
-    tableau_logs = Log.objects.order_by("-date_log") 
-    
-    # On récupère le nombre choisi, sinon 10 par défaut
+
+    #on recupere le mot cle de recherche
+    query = request.GET.get('q', '')    
+    # On récupère le nombre de pages choisi, sinon 10 par défaut
     par_page = request.GET.get('per_page', 10)
+    
+    # Filtrage : on cherche dans l'immatriculation du véhicule lié
+    tableau_logs = Log.objects.order_by("-date_log") 
+    if query:
+        tableau_logs = tableau_logs.filter(vehicule__immatriculation__icontains=query)
     
     # On définit 10 logs par page
     paginator = Paginator(tableau_logs, par_page) 
@@ -28,6 +34,7 @@ def index_tableau_logs(request):
     context = {
         "logs": page_obj, 
         'par_page': int(par_page),
+        'query': query,
     }
     return render(request, "gmax_km/logs/tableau_logs.html", context)
 
