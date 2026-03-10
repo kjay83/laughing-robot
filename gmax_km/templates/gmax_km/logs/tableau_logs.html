@@ -65,5 +65,26 @@
             </tbody>
         </table>
     </div>
+    <div class="flex flex-col items-center mt-4 gap-2">
+        <!-- Le compteur total -->
+        <div class="text-sm opacity-60">
+            Total : <span class="font-bold">{{ logs.paginator.count }}</span> logs enregistrés
+        </div>
+
+        <!-- boutons de pagination  -->
+        <div class="join">
+            {% if logs.has_previous %}
+                <a href="?page={{ logs.previous_page_number }}" class="join-item btn btn-sm">«</a>
+            {% endif %}
+            
+            <button class="join-item btn btn-sm bg-base-200">
+                Page {{ logs.number }} / {{ logs.paginator.num_pages }}
+            </button>
+            
+            {% if logs.has_next %}
+                <a href="?page={{ logs.next_page_number }}" class="join-item btn btn-sm">»</a>
+            {% endif %}
+        </div>
+    </div>
 </div>
 {% endblock %}

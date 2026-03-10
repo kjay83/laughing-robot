@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, Http404
 from django.template import loader
+from django.core.paginator import Paginator
 
 from .models import Vehicule, Log
 from .forms import VehiculeForm, LogForm
@@ -12,8 +13,16 @@ def index(request):
     return render(request, "gmax_km/logs/liste_logs.html", context)
 
 def index_tableau_logs(request):
-    tableau_logs = Log.objects.order_by("-date_log")    
-    context = {"logs": tableau_logs}
+    tableau_logs = Log.objects.order_by("-date_log") 
+
+    # On définit 10 logs par page
+    paginator = Paginator(tableau_logs, 10) 
+    
+    # On récupère le numéro de la page dans l'URL (ex: ?page=2)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {"logs": page_obj}
     return render(request, "gmax_km/logs/tableau_logs.html", context)
 
 def detail_logs(request, log_id):

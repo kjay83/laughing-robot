@@ -17,7 +17,7 @@
             <div class="space-x-2">
                 <p class="badge badge-soft badge-secondary">Entrée N° {{log.id}}</p>
                 <p class="font-bold text-lg">{{log.vehicule.immatriculation}}</p>
-                <p class="badge badge badge-primary">{{log.date_log}}</p>
+                <p class="badge badge badge-primary">{{log.date_log|date:"d/m/Y H:i"}}</p>
                 <p class="badge badge-accent">{{log.km|intcomma}} KM</p>
             </div>
             <div class="space-x-2">
