@@ -65,6 +65,22 @@
             </tbody>
         </table>
     </div>
+
+    <!-- Sélecteur de nombre par page -->
+    <form method="get" class="flex items-center gap-2">
+        <label class="label text-xs opacity-70">Afficher</label>
+        <select name="per_page" onchange="this.form.submit()" class="select select-bordered select-sm">
+            <option value="10" {% if par_page == 10 %}selected{% endif %}>10</option>
+            <option value="20" {% if par_page == 20 %}selected{% endif %}>20</option>
+            <option value="50" {% if par_page == 50 %}selected{% endif %}>50</option>
+            <option value="100" {% if par_page == 100 %}selected{% endif %}>100</option>
+        </select>
+        <span class="text-xs opacity-70">par page</span>
+        
+        <!-- On garde le numéro de page actuel si besoin, ou on revient à la page 1 -->
+        <input type="hidden" name="page" value="1">
+    </form>
+    <!-- Pagination du tableau -->
     <div class="flex flex-col items-center mt-4 gap-2">
         <!-- Le compteur total -->
         <div class="text-sm opacity-60">

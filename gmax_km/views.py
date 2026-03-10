@@ -14,15 +14,21 @@ def index(request):
 
 def index_tableau_logs(request):
     tableau_logs = Log.objects.order_by("-date_log") 
-
+    
+    # On récupère le nombre choisi, sinon 10 par défaut
+    par_page = request.GET.get('per_page', 10)
+    
     # On définit 10 logs par page
-    paginator = Paginator(tableau_logs, 10) 
+    paginator = Paginator(tableau_logs, par_page) 
     
     # On récupère le numéro de la page dans l'URL (ex: ?page=2)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    context = {"logs": page_obj}
+    context = {
+        "logs": page_obj, 
+        'par_page': int(par_page),
+    }
     return render(request, "gmax_km/logs/tableau_logs.html", context)
 
 def detail_logs(request, log_id):
