@@ -3,9 +3,9 @@ from django.http import HttpResponse, Http404
 from django.template import loader
 
 from .models import Vehicule, Log
-from .forms import VehiculeForm
+from .forms import VehiculeForm, LogForm
 
-# LOGS
+# LOGS----------------------------------------------------
 def index(request):
     liste_logs = Log.objects.order_by("-date_log")    
     context = {"logs": liste_logs}
@@ -15,19 +15,43 @@ def detail_logs(request, log_id):
     log = get_object_or_404(Log,id=log_id)
     return render(request, 'gmax_km/logs/detail_logs.html' , {'log' : log})
 
+#fonction pour sauvegarder le formulaire relatif aux logs de km
+# C'est necessaire pour verifier si l'utilisateur existe
+# et ne pas avoir une erreur avec la base si c'est null
+def save_form_log(request, form):
+    log_instance = form.save(commit=False)
+        
+    # On n'enregistre l'utilisateur QUE s'il est connecté
+    if request.user.is_authenticated:
+        log_instance.updated_by = request.user
+    else:
+        log_instance.updated_by = None  # Il reste vide
+                   
+    log_instance.save()
+
 def ajouter_logs(request):
-    msg = f"ajouter_logs"
-    return HttpResponse(msg)
+    form = LogForm(request.POST or None)
+    if form.is_valid() :
+        save_form_log(request, form)
+        return redirect('gmax_km:liste_logs_url')
+    return render(request, 'gmax_km/logs/formulaire_logs.html' , {'form' : form})
 
 def modifier_logs(request,log_id):
-    msg = f"modifier log {log_id}"
-    return HttpResponse(msg)
+    log = get_object_or_404(Log,id=log_id)
+    form = LogForm(request.POST or None, instance=log)
+    if form.is_valid() :
+        save_form_log(request, form)
+        return redirect('gmax_km:detail_logs_url',log_id=log.id)
+    return render(request, 'gmax_km/logs/formulaire_logs.html' , {'form' : form})
 
 def supprimer_logs(request,log_id):
-    msg = f"supprimer log {log_id}"
-    return HttpResponse(msg)
+    log = get_object_or_404(Log,id=log_id)
+    if request.method == "POST":
+        log.delete()
+        return redirect('gmax_km:liste_logs_url')
+    return render(request, 'gmax_km/logs/confirmer_suppression_logs.html' , {'log' : log})
 
-# VEHICULES
+# VEHICULES----------------------------------------------
 def liste_vehicules(request):
     liste_vehicules = Vehicule.objects.order_by("immatriculation")    
     context = {"liste_vehicules": liste_vehicules}

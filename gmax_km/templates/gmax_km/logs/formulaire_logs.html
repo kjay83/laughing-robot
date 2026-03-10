@@ -1,15 +1,22 @@
 {% extends "gmax_km/base.html" %}
 
 
-{% block content %}    
+{% block content %}  
     <form method="POST" class="space-y-4">
         {% csrf_token %}
-        {{form.date_log}}
-        {{form.immatriculation}}
-        {{form.km}}
+        {% if form.instance.id %}
+            <span class="font-bold"> Modification du log N° {{form.instance.id}}</span><br>
+        {% else %}
+            <span class="font-bold"> Ajout d'un nouveau log</span><br>
+        {% endif %}
+        {{form.date_log.label}}{{form.date_log}}
+        {{form.vehicule.label}} 
+        <span><a href="{% url 'gmax_km:ajouter_vehicules_url' %}" class="btn btn-xs btn-secondary">Ajouter un vehicule</a></span>
+        <span>{{form.vehicule}} </span>         
+        {{form.km.label}}{{form.km}}
         <div>
             <button type="submit" class="btn btn-primary">Enregistrer</button>
-            <a href="{% url 'gmax_km:liste_logs_url' %}" class="btn btn-accent">Revenir à la liste</a>
+            <a href="{% url 'gmax_km:liste_logs_url' %}" class="btn btn-accent">Revenir aux logs</a>
         </div>
     </form>
 {% endblock %}

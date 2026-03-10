@@ -3,9 +3,9 @@
 
 {% block content %}    
     <form method="POST" class="space-y-4 flex flex-col">
-        <span class="text-center">Etes-vous sûr de vouloir supprimer l'entrée du {{log.date_log}}
-            concernant le vehicule immatriculé <strong>{{log.vehicule.immatriculation}}</strong>
-            <i> ({{log.km} km})</i>
+        <span class="text-center">Etes-vous sûr de vouloir supprimer l'entrée N° {{log.id}} 
+            relative au vehicule immatriculé <strong>{{log.vehicule.immatriculation}}</strong> ?
+            <br><i> (du {{log.date_log}} avec {{log.km}} km)</i>
         </span>
         {% csrf_token %}
         <button type="submit" class="btn btn-error">Oui</button>
