@@ -5,3 +5,7 @@ from django.contrib import admin
 from .models import *
 
 admin.site.register(Player)
+admin.site.register(Entreprise)
+admin.site.register(CompagnieAerienne)
+admin.site.register(modeleAvion)
+admin.site.register(Avion)
