@@ -1,0 +1,18 @@
+{% extends "aerial/base.html" %}
+{% load humanize %}
+
+
+{% block content %}
+<div class="w-full bg-base-200">
+    JOUEUR N° {{player.id}} <br><br>
+    <div>
+        Nom : {{player.nom}} <br>
+        Prenom : {{player.prenom}} <br>
+        Alias : {{player.alias}} <br>
+        Email : {{player.email}} <br>
+        Money : {{player.money|intcomma}} XAF <br>
+        Créé le : {{player.created_at}} <br> 
+        Modifié le : {{player.updated_at}} <br> 
+    </div>
+</div>
+{% endblock %}

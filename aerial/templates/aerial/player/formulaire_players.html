@@ -1,0 +1,27 @@
+{% extends "aerial/base.html" %}
+{% load humanize %}
+
+{% block content %}  
+    <form method="POST" class="space-y-4">
+        {% csrf_token %}
+        {% if form.instance.id %}
+            <span class="font-bold"> Creation d'un nouveau Player</span><br>
+        {% else %}
+            <span class="font-bold"> Modification d'un nouveau Player</span><br>
+        {% endif %}
+        <span class="font-bold"> {{titre_a_afficher}}</span><br>
+        <div>            
+            {{form.nom.label}}{{form.nom}}
+            {{form.prenom.label}}{{form.prenom}}
+            {{form.alias.label}}{{form.alias}}
+            {{form.email.label}}{{form.email}}
+        </div>
+        <div>
+            {{form.money.label}}{{form.money|intcomma}}
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary">Enregister</button>
+            <a href="{% url 'aerial:liste_players_url' %}" class="btn btn-accent">Liste Joueurs</a>
+        </div>
+    </form>
+{% endblock %}

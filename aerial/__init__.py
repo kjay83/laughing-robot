@@ -1,0 +1,1 @@
+__aerial_version__ = '0.0.1'

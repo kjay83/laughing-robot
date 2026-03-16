@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'employe',
     'gmax_km',
+    'aerial',
 ]
 
 MIDDLEWARE = [

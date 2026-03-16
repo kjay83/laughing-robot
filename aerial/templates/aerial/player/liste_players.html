@@ -1,0 +1,31 @@
+{% extends "aerial/base.html" %}
+{% load humanize %}
+
+
+{% block content %}
+<div class="w-full bg-base-200">
+    <div class="mb-2">
+        <p class="font-bold text-lg">LISTE DES JOUEURS </p>
+    </div>
+    <div class="mb-4">
+        <a href="{% url 'aerial:creer_players_url' %}" class="btn btn-primary w-full">Créer un Joueur</a>
+    </div>
+
+    <div class="space-y-4 w-full">
+        {% for player in players %}
+        <div class="p-4 bg-base-100 rounded-lg w-full flex justify-between items-center">
+            <div class="space-x-2">
+                <p class="badge badge-soft badge-secondary">Joueur N° {{player.id}}</p>
+                <p class="font-bold text-lg">{{player.alias}}</p>
+                <p class="badge badge-accent">{{player.money|intcomma}} XAF</p>
+            </div>
+            <div class="space-x-2">
+                <a href="{% url 'aerial:detail_players_url' player.id %}" class="btn btn-primary btn-sm">Détails</a>
+                <a href="{% url 'aerial:modifier_players_url' player.id %}" class="btn btn-primary btn-sm">Modifier</a>
+                <a href="{% url 'aerial:supprimer_players_url' player.id %}" class="btn btn-primary btn-soft btn-sm">Supprimer</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
