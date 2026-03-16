@@ -43,10 +43,11 @@ class DistanceEntreDeuxVilles(models.Model):
         return f"{self.ville1}-{self.ville2}-{self.km}"
     
 class Player(models.Model):
-    nom = models.CharField(max_length=200)
-    prenom = models.CharField(default='AUCUN',max_length=200,blank=True)
-    alias = models.CharField(default='AUCUN',max_length=200,blank=True)
-    email = models.EmailField(default='aucun@fail.com',max_length=200,blank=True)
+    nom = models.CharField(max_length=200,blank=True,null=True)
+    prenom = models.CharField(default='AUCUN',max_length=200,blank=True,null=True)
+    #TODO: s'assurer que UNIQUE dans la BDD
+    alias = models.CharField(default='AUCUN',max_length=200,unique=True)
+    email = models.EmailField(default='aucun@fail.com',max_length=200,blank=True,null=True)
     money = models.DecimalField(default=0,max_digits=20, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -66,7 +67,8 @@ class Player(models.Model):
 class CompagnieAerienne(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     #TODO: verifier que le nom est unique dans la table
-    nom = models.CharField(default="AIR AERIAL",max_length=200)
+    nom = models.CharField(default="AIR AERIAL",max_length=200,blank=True,null=True)
+    abbreviation = models.CharField(default="AA",max_length=5,unique=True)
     cash = models.DecimalField(default=0,max_digits=20, decimal_places=2)
     cash_flow = models.DecimalField(default=0,max_digits=20, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -74,7 +76,7 @@ class CompagnieAerienne(models.Model):
     
 
     def __str__(self):
-        return f"{self.nom}"
+        return f"{self.abbreviation}"
 
 #TODO: faire heriter les types d'entreprise de la classe entreprise
 # #class CompagnieAerienne(Entreprise):
@@ -113,6 +115,7 @@ class Avion(models.Model):
     #numero de l'avion dans la flotte
     #TODO: s'assurer qu'il est unique dans la flotte
     indicatif_flotte = models.IntegerField(default=1,blank=True)
+    nom_court = models.CharField(default="FE",max_length=10,blank=True,null=True)
 
     def verifier_amortissement(self) :
         if self.nb_heures_fonctionnement == self.modele.nb_km_max_par_exploitation :
@@ -165,3 +168,12 @@ class AvionParFlotte(models.Model):
     
     def __str__(self):
         return f"{self.flotte}_{self.avion.indicatif_flotte}"
+
+#Affectations des avions sur les lignes
+#dans une ligne donne quels sont les avions qui y volent
+class AvionParLignes(models.Model):
+    ligne = models.ForeignKey(LignesParHub, on_delete=models.CASCADE)
+    avion = models.ForeignKey(Avion, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return f"{self.ligne}_{self.avion.indicatif_flotte}"

@@ -5,7 +5,7 @@
 {% block content %}
 <div class="w-full bg-base-200">
     JOUEUR N° {{player.id}} <br><br>
-    <div>
+    <div class="mb-2">
         Nom : {{player.nom}} <br>
         Prenom : {{player.prenom}} <br>
         Alias : {{player.alias}} <br>
@@ -13,6 +13,11 @@
         Money : {{player.money|intcomma}} XAF <br>
         Créé le : {{player.created_at}} <br> 
         Modifié le : {{player.updated_at}} <br> 
+    </div>
+    <div class="space-x-2">
+        <a href="{% url 'aerial:liste_players_url' %}" class="btn btn-primary">Liste</a>
+        <a href="{% url 'aerial:modifier_players_url' player.id %}" class="btn btn-primary btn-sm">Modifier</a>
+        <a href="{% url 'aerial:supprimer_players_url' player.id %}" class="btn btn-primary btn-soft btn-sm">Supprimer</a>
     </div>
 </div>
 {% endblock %}
