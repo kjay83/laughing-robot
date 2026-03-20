@@ -16,7 +16,7 @@
         <div class="p-4 bg-base-100 rounded-lg w-full flex justify-between items-center">
             <div class="space-x-2">
                 <p class="badge badge-soft badge-secondary">Joueur N° {{player.id}}</p>
-                <p class="font-bold text-lg">{{player.alias}}</p>
+                <p class="font-bold text-lg">({{player.alias}}) {{player.nom|upper}} {{player.prenom|title}}</p>
                 <p class="badge badge-accent">{{player.money|intcomma}} XAF</p>
             </div>
             <div class="space-x-2">

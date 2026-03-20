@@ -11,4 +11,5 @@ urlpatterns = [
     path('player/creer/', views.creer_players, name="creer_players_url"),
     path('player/<int:player_id>/modifier', views.modifier_players, name="modifier_players_url"),
     path('player/<int:player_id>/supprimer', views.supprimer_players, name="supprimer_players_url"),
+    path("init",views.initialize,name="init_url"),
 ]

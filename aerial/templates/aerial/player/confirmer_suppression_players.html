@@ -3,7 +3,7 @@
 
 {% block content %}    
     <form method="POST" class="space-y-4 flex flex-col">
-        <span class="text-center">Etes-vous sûr de vouloir supprimer le joueur N° {{player.id}} <strong>{{player.nom}}</strong> <i></i></span>
+        <span class="text-center">Etes-vous sûr de vouloir supprimer le joueur N° {{player.id}} <strong>{{player.alias}}</strong> <i></i></span>
         {% csrf_token %}
         <button type="submit" class="btn btn-error">Oui vas y, degage le frère!</button>
         <a href="{% url 'aerial:liste_players_url' %}" class="btn btn-primary w-full">Annuler</a>
