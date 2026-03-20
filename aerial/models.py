@@ -19,10 +19,11 @@ class Pays(models.Model):
 
 class Ville(models.Model):
     nom = models.CharField(max_length=100,blank=True,null=True)
-    abbreviation = models.CharField(default="PNR",max_length=10)
+    abbreviation = models.CharField(default="NON DEFINI",max_length=15,unique=True)
     pays = models.ForeignKey(Pays, on_delete=models.CASCADE)
     peut_etre_hub = models.BooleanField(default=False,blank=True)
-    prix_location_hub = models.DecimalField(default=0,max_digits=10,decimal_places=2,blank=True,null=True)
+    prix_location_hub = models.DecimalField(default=0,max_digits=20,decimal_places=2,blank=True,null=True)
+    demande = models.DecimalField(default=0.1,max_digits=3,decimal_places=2,blank=True,null=True)
     
     def __str__(self):
         return f"{self.abbreviation}"
@@ -70,15 +71,15 @@ class CompagnieAerienne(models.Model):
     class TypeEntreprise(models.TextChoices):
         COMPANIE_AERIENNE = "AER", "Companie Aerienne"
         BANQUE = "BQ", "Banque"
+    type_entreprise =models.CharField(default=TypeEntreprise.COMPANIE_AERIENNE,
+                                      choices=TypeEntreprise,
+                                      max_length=25, blank=True, null=True)  
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     nom = models.CharField(default="AIR AERIAL",max_length=200,blank=True,null=True)
     abbreviation = models.CharField(default="AA",max_length=5,unique=True)
     cash = models.DecimalField(default=0,max_digits=20, decimal_places=2)
     cash_flow = models.DecimalField(default=0,max_digits=20, decimal_places=2)
-    created_at = models.DateTimeField(auto_now_add=True)
-    type_entreprise =models.CharField(default=TypeEntreprise.COMPANIE_AERIENNE,
-                                      choices=TypeEntreprise,
-                                      max_length=25, blank=True, null=True)    
+    created_at = models.DateTimeField(auto_now_add=True)  
 
     def __str__(self):
         return f"{self.abbreviation}"
@@ -98,17 +99,21 @@ class modeleAvion(models.Model):
     nb_km_max_par_exploitation = models.IntegerField(default=10000,blank=True)
     nb_km_avant_maintenance = models.IntegerField(default=100,blank=True) 
     nb_heures_par_maintenance = models.DecimalField(default=1,max_digits=5, decimal_places=2,blank=True)
-    maintenance_fee_percentage = models.DecimalField(default=10,max_digits=3, decimal_places=2,blank=True)
+    maintenance_fee_percentage = models.DecimalField(default=10,max_digits=5, decimal_places=2,blank=True)
     prix_achat = models.DecimalField(default=100,max_digits=20, decimal_places=2,blank=True)
 
     def get_couts_maintenance(self) -> float:
         return self.prix_achat * self.maintenance_fee_percentage * self.nb_heures_maintenance
     
     def __str__(self):
-        return f"{self.fabricant}_{self.nom}"
+        return f"{self.nom}"
 
 
 class Avion(models.Model):
+    class StatutAvion(models.TextChoices):
+        EN_VOL = "VOL", "En vol"
+        HANGAR = "HANGAR", "Hangar"
+        MAINTENANCE = "MAINT" "Maintenance"
     compagnie = models.ForeignKey(CompagnieAerienne, on_delete=models.CASCADE)
     # on utilise pas CASCADE pour le modele au cas ou on aurait des avions en vol/fonctionnement en cours
     modele = models.ForeignKey(modeleAvion, on_delete=models.SET_NULL,null=True)
@@ -116,7 +121,10 @@ class Avion(models.Model):
     est_amorti = models.BooleanField(default=False,blank=True)
     km_parcourus = models.IntegerField(default=0,blank=True)
     #TODO: faire des noms aleatoires
-    nom_court = models.CharField(default="SILVARILLON",max_length=15,blank=True,null=True)
+    nom_court = models.CharField(default="SILVARILLON",max_length=15,blank=True,null=True,unique=True)
+    statut = models.CharField(default=StatutAvion.HANGAR,
+                                      choices=StatutAvion,
+                                      max_length=25, blank=True, null=True) 
 
     def verifier_amortissement(self) :
         if self.nb_heures_fonctionnement == self.modele.nb_km_max_par_exploitation :

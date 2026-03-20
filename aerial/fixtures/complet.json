@@ -1,0 +1,322 @@
+[
+{
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$1200000$5QbH8mRSHcHGp2Eyd4746r$l5bPoGqMxoO6iyT1hgUu11ofLtmvRMF4Mg7NtFnnEkc=",
+        "last_login": "2026-03-20T16:38:28.037Z",
+        "is_superuser": true,
+        "username": "admin",
+        "first_name": "",
+        "last_name": "",
+        "email": "admin@admin.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2026-03-16T22:18:17.899Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "aerial.pays",
+    "pk": 1,
+    "fields": {
+        "nom": "CONGO (REP)",
+        "abbreviation": "CG"
+    }
+},
+{
+    "model": "aerial.pays",
+    "pk": 2,
+    "fields": {
+        "nom": "FRANCE",
+        "abbreviation": "FR"
+    }
+},
+{
+    "model": "aerial.ville",
+    "pk": 1,
+    "fields": {
+        "nom": "POINTE-NOIRE",
+        "abbreviation": "PNR",
+        "pays": 1,
+        "peut_etre_hub": false,
+        "prix_location_hub": "0.00",
+        "demande": "0.10"
+    }
+},
+{
+    "model": "aerial.ville",
+    "pk": 2,
+    "fields": {
+        "nom": "BRAZZAVILLE",
+        "abbreviation": "BZV",
+        "pays": 1,
+        "peut_etre_hub": false,
+        "prix_location_hub": "0.00",
+        "demande": "0.10"
+    }
+},
+{
+    "model": "aerial.ville",
+    "pk": 3,
+    "fields": {
+        "nom": "OYO",
+        "abbreviation": "OYO",
+        "pays": 1,
+        "peut_etre_hub": false,
+        "prix_location_hub": "0.00",
+        "demande": "0.10"
+    }
+},
+{
+    "model": "aerial.ville",
+    "pk": 4,
+    "fields": {
+        "nom": "MAKOUA",
+        "abbreviation": "MAK",
+        "pays": 1,
+        "peut_etre_hub": false,
+        "prix_location_hub": "0.00",
+        "demande": "0.10"
+    }
+},
+{
+    "model": "aerial.ville",
+    "pk": 5,
+    "fields": {
+        "nom": "DOLISIE",
+        "abbreviation": "DOL",
+        "pays": 1,
+        "peut_etre_hub": false,
+        "prix_location_hub": "0.00",
+        "demande": "0.10"
+    }
+},
+{
+    "model": "aerial.ville",
+    "pk": 6,
+    "fields": {
+        "nom": "PARIS",
+        "abbreviation": "PAR",
+        "pays": 2,
+        "peut_etre_hub": false,
+        "prix_location_hub": "0.00",
+        "demande": "0.10"
+    }
+},
+{
+    "model": "aerial.ville",
+    "pk": 7,
+    "fields": {
+        "nom": "MARSEILLE",
+        "abbreviation": "MAR",
+        "pays": 2,
+        "peut_etre_hub": false,
+        "prix_location_hub": "0.00",
+        "demande": "0.10"
+    }
+},
+{
+    "model": "aerial.ville",
+    "pk": 8,
+    "fields": {
+        "nom": "LYON",
+        "abbreviation": "LYON",
+        "pays": 2,
+        "peut_etre_hub": false,
+        "prix_location_hub": "0.00",
+        "demande": "0.10"
+    }
+},
+{
+    "model": "aerial.ville",
+    "pk": 9,
+    "fields": {
+        "nom": "BORDEAUX",
+        "abbreviation": "BORD",
+        "pays": 2,
+        "peut_etre_hub": false,
+        "prix_location_hub": "0.00",
+        "demande": "0.10"
+    }
+},
+{
+    "model": "aerial.ville",
+    "pk": 10,
+    "fields": {
+        "nom": "STRASBOURG",
+        "abbreviation": "STRAS",
+        "pays": 2,
+        "peut_etre_hub": false,
+        "prix_location_hub": "0.00",
+        "demande": "0.10"
+    }
+},
+{
+    "model": "aerial.player",
+    "pk": 1,
+    "fields": {
+        "nom": "DWEJE",
+        "prenom": "Halicor",
+        "alias": "p1halddj",
+        "email": "hald@weje.com",
+        "money": "0.00",
+        "created_at": "2026-03-20T17:23:01.239Z",
+        "updated_at": "2026-03-20T17:24:01.239Z"
+    }
+},
+{
+    "model": "aerial.player",
+    "pk": 2,
+    "fields": {
+        "nom": "Planga",
+        "prenom": "Ruben",
+        "alias": "p2rbenPlan",
+        "email": "rueb@planga.com",
+        "money": "0.00",
+        "created_at": "2026-03-20T17:24:01.482Z",
+        "updated_at": "2026-03-20T17:24:01.482Z"
+    }
+},
+{
+    "model": "aerial.player",
+    "pk": 10,
+    "fields": {
+        "nom": null,
+        "prenom": "NON DEFINI",
+        "alias": "p1",
+        "email": "aucun@fail.com",
+        "money": "0.00",
+        "created_at": "2026-03-20T17:58:14.199Z",
+        "updated_at": "2026-03-20T17:58:14.199Z"
+    }
+},
+{
+    "model": "aerial.player",
+    "pk": 11,
+    "fields": {
+        "nom": null,
+        "prenom": "NON DEFINI",
+        "alias": "p2",
+        "email": "aucun@fail.com",
+        "money": "0.00",
+        "created_at": "2026-03-20T17:58:14.343Z",
+        "updated_at": "2026-03-20T17:58:14.343Z"
+    }
+},
+{
+    "model": "aerial.compagnieaerienne",
+    "pk": 1,
+    "fields": {
+        "type_entreprise": "AER",
+        "player": 1,
+        "nom": "AIR DAJ",
+        "abbreviation": "ADAJ",
+        "cash": "0.00",
+        "cash_flow": "0.00",
+        "created_at": "2026-03-20T21:09:25.516Z"
+    }
+},
+{
+    "model": "aerial.compagnieaerienne",
+    "pk": 2,
+    "fields": {
+        "type_entreprise": "AER",
+        "player": 2,
+        "nom": "AIR PLANGA",
+        "abbreviation": "APLAN",
+        "cash": "0.00",
+        "cash_flow": "0.00",
+        "created_at": "2026-03-20T21:09:44.143Z"
+    }
+},
+{
+    "model": "aerial.fabricant",
+    "pk": 1,
+    "fields": {
+        "nom": "BOEING",
+        "abbreviation": "BOEING"
+    }
+},
+{
+    "model": "aerial.fabricant",
+    "pk": 2,
+    "fields": {
+        "nom": "BOMBARDIER",
+        "abbreviation": "BOMBAR"
+    }
+},
+{
+    "model": "aerial.fabricant",
+    "pk": 3,
+    "fields": {
+        "nom": "AIRBUS",
+        "abbreviation": "AIRBUS"
+    }
+},
+{
+    "model": "aerial.fabricant",
+    "pk": 4,
+    "fields": {
+        "nom": "EMBRAER",
+        "abbreviation": "EMBR"
+    }
+},
+{
+    "model": "aerial.modeleavion",
+    "pk": 1,
+    "fields": {
+        "nom": "BOEING737",
+        "fabricant": 1,
+        "nb_places": 200,
+        "nb_km_max_par_vol": 3000,
+        "nb_km_max_par_exploitation": 300000,
+        "nb_km_avant_maintenance": 30000,
+        "nb_heures_par_maintenance": "20.00",
+        "maintenance_fee_percentage": "22.00",
+        "prix_achat": "20000.00"
+    }
+},
+{
+    "model": "aerial.modeleavion",
+    "pk": 2,
+    "fields": {
+        "nom": "EMBRAER254",
+        "fabricant": 4,
+        "nb_places": 50,
+        "nb_km_max_par_vol": 1500,
+        "nb_km_max_par_exploitation": 10000,
+        "nb_km_avant_maintenance": 500,
+        "nb_heures_par_maintenance": "3.00",
+        "maintenance_fee_percentage": "10.00",
+        "prix_achat": "100000.00"
+    }
+},
+{
+    "model": "aerial.avion",
+    "pk": 1,
+    "fields": {
+        "compagnie": 1,
+        "modele": 1,
+        "est_a_maintenir": false,
+        "est_amorti": false,
+        "km_parcourus": 0,
+        "nom_court": "SILVARILLON",
+        "statut": "HANGAR"
+    }
+},
+{
+    "model": "aerial.avion",
+    "pk": 2,
+    "fields": {
+        "compagnie": 1,
+        "modele": 2,
+        "est_a_maintenir": false,
+        "est_amorti": false,
+        "km_parcourus": 0,
+        "nom_court": "RAMEN",
+        "statut": "HANGAR"
+    }
+}
+]
