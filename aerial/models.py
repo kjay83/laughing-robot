@@ -1,42 +1,23 @@
 from django.db import models
 
-
-
-
-class Continent(models.Model):
-    nom = models.CharField(max_length=100,blank=True,null=True)
-    abbreviation = models.CharField(default="ABBR",max_length=50)
-    
-    def __str__(self):
-        return f"{self.abbreviation}"
-
 class Pays(models.Model):
     nom = models.CharField(max_length=100,blank=True,null=True)
-    abbreviation = models.CharField(default="ABBR",max_length=50)
-    continent = models.ForeignKey(Continent, on_delete=models.CASCADE)
+    abbreviation = models.CharField(default="CG",max_length=50,unique=True)
     
     def __str__(self):
         return f"{self.abbreviation}"
 
 class Ville(models.Model):
     nom = models.CharField(max_length=100,blank=True,null=True)
-    abbreviation = models.CharField(default="ABBR",max_length=50)
+    abbreviation = models.CharField(default="PNR",max_length=10)
     pays = models.ForeignKey(Pays, on_delete=models.CASCADE)
     
     def __str__(self):
         return f"{self.abbreviation}"
 
-class Aeroport(models.Model):
-    nom = models.CharField(max_length=100,blank=True,null=True)
-    abbreviation = models.CharField(default="ABBR",max_length=50)
-    ville = models.ForeignKey(Ville, on_delete=models.CASCADE)
-    
-    def __str__(self):
-        return f"{self.ville}_{self.abbreviation}"
-
 class DistanceEntreDeuxVilles(models.Model):
-    ville1 = models.ForeignKey(Ville, on_delete=models.CASCADE,related_name="ville1rel")
-    ville2 = models.ForeignKey(Ville, on_delete=models.CASCADE,related_name="ville2rel")
+    ville1 = models.ForeignKey(Ville, on_delete=models.CASCADE,related_name="depart")
+    ville2 = models.ForeignKey(Ville, on_delete=models.CASCADE,related_name="arrivee")
     km = models.IntegerField(default=1,blank=True)
 
     def __str__(self):
@@ -44,9 +25,8 @@ class DistanceEntreDeuxVilles(models.Model):
     
 class Player(models.Model):
     nom = models.CharField(max_length=200,blank=True,null=True)
-    prenom = models.CharField(default='AUCUN',max_length=200,blank=True,null=True)
-    #TODO: s'assurer que UNIQUE dans la BDD
-    alias = models.CharField(default='AUCUN',max_length=200,unique=True)
+    prenom = models.CharField(default='NON DEFINI',max_length=200,blank=True,null=True)
+    alias = models.CharField(default='ALIAS',max_length=200,unique=True)
     email = models.EmailField(default='aucun@fail.com',max_length=200,blank=True,null=True)
     money = models.DecimalField(default=0,max_digits=20, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -63,40 +43,43 @@ class Player(models.Model):
     
     def pay(self,amount):
         self.money -= amount
+    
+
 
 class CompagnieAerienne(models.Model):
+    class TypeEntreprise(models.TextChoices):
+        COMPANIE_AERIENNE = "AER", "Companie Aerienne"
+        BANQUE = "BQ", "Banque"
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
-    #TODO: verifier que le nom est unique dans la table
     nom = models.CharField(default="AIR AERIAL",max_length=200,blank=True,null=True)
     abbreviation = models.CharField(default="AA",max_length=5,unique=True)
     cash = models.DecimalField(default=0,max_digits=20, decimal_places=2)
     cash_flow = models.DecimalField(default=0,max_digits=20, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
-    type_entreprise =models.CharField(default="COMPANIE_AERIENNE",max_length=200,blank=True,null=True)
-    
+    type_entreprise =models.CharField(default=TypeEntreprise.COMPANIE_AERIENNE,
+                                      choices=TypeEntreprise,
+                                      max_length=25, blank=True, null=True)    
 
     def __str__(self):
         return f"{self.abbreviation}"
 
-#TODO: faire heriter les types d'entreprise de la classe entreprise
-# #class CompagnieAerienne(Entreprise):
-    #def __init__(self):
-       # self.type_entreprise="COMPANIE_AERIENNE"
-
-   # def faire_voler_flotte(self):
-    #    self.cash += 10
+class Fabricant(models.Model):
+    nom = models.CharField(max_length=100,blank=True,null=True)
+    abbreviation = models.CharField(default="BOEING",max_length=10,unique=True)
+    
+    def __str__(self):
+        return f"{self.abbreviation}"
 
 class modeleAvion(models.Model):
     nom = models.CharField(max_length=50)
-    #TODO: transformer en ENUM
-    fabricant = models.CharField(max_length=50,blank=True,null=True)
+    fabricant = models.ForeignKey(Fabricant, on_delete=models.SET_NULL)
     nb_places = models.IntegerField(default=200,blank=True)
     nb_km_max_par_vol = models.IntegerField(default=3000,blank=True)
     nb_km_max_par_exploitation = models.IntegerField(default=10000,blank=True)
-    nb_km_maintenance = models.IntegerField(default=100,blank=True) 
-    nb_heures_maintenance = models.DecimalField(default=1,max_digits=5, decimal_places=2,blank=True)
-    maintenance_fee_percentage = models.IntegerField(default=10,blank=True)
-    prix_achat = models.DecimalField(default=100,max_digits=20, decimal_places=2)
+    nb_km_avant_maintenance = models.IntegerField(default=100,blank=True) 
+    nb_heures_par_maintenance = models.DecimalField(default=1,max_digits=5, decimal_places=2,blank=True)
+    maintenance_fee_percentage = models.DecimalField(default=10,max_digits=3, decimal_places=2,blank=True)
+    prix_achat = models.DecimalField(default=100,max_digits=20, decimal_places=2,blank=True)
 
     def get_couts_maintenance(self) -> float:
         return self.prix_achat * self.maintenance_fee_percentage * self.nb_heures_maintenance
@@ -107,15 +90,11 @@ class modeleAvion(models.Model):
 
 class Avion(models.Model):
     compagnie = models.ForeignKey(CompagnieAerienne, on_delete=models.CASCADE)
-    modele = models.ForeignKey(modeleAvion, on_delete=models.CASCADE)
-    nb_heures_fonctionnement = models.DecimalField(default=0,max_digits=5, decimal_places=2,blank=True)
+    modele = models.ForeignKey(modeleAvion, on_delete=models.SET_NULL)
     est_a_maintenir = models.BooleanField(default=False,blank=True)
     est_amorti = models.BooleanField(default=False,blank=True)
     km_parcourus = models.IntegerField(default=0,blank=True)
-    #numero de l'avion dans la flotte
-    #TODO: s'assurer qu'il est unique dans la flotte
-    indicatif_flotte = models.IntegerField(default=1,blank=True)
-    nom_court = models.CharField(default="FE",max_length=10,blank=True,null=True)
+    nom_court = models.CharField(default="SILVARILLON",max_length=15,blank=True,null=True)
 
     def verifier_amortissement(self) :
         if self.nb_heures_fonctionnement == self.modele.nb_km_max_par_exploitation :
