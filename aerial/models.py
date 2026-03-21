@@ -9,6 +9,8 @@ NOTES POUR LES AVIONS:
 - seuls quelques villes peuvent etre des hub
 '''
 from django.db import models
+from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError
 
 class Pays(models.Model):
     nom = models.CharField(max_length=100,blank=True,null=True)
@@ -75,7 +77,29 @@ class Player(models.Model):
         self.cash += amount
     
     def pay(self,amount):
-        self.cash -= amount    
+        self.cash -= amount
+    
+    def clean(self):
+        """Valider que l'alias ne peut pas être identique à un ID existant"""
+        super().clean()
+        
+        # Essayer de convertir l'alias en entier
+        try:
+            alias_as_int = int(self.alias)
+            # Vérifier si un Player avec cet ID existe (en excluant le joueur actuel lors de la modification)
+            if Player.objects.filter(pk=alias_as_int).exclude(pk=self.pk).exists():
+                raise ValidationError(
+                    f"L'alias '{self.alias}' correspond à un ID existant. "
+                    "Merci de choisir un autre alias."
+                )
+        except ValueError:
+            # L'alias n'est pas un nombre, c'est OK
+            pass
+    
+    def save(self, *args, **kwargs):
+        """Valider avant de sauvegarder"""
+        self.full_clean()
+        super().save(*args, **kwargs)
 
 class Entreprise(models.Model):    
     # Attributs communs à TOUTES les entreprises (ex: capital, niveau)
@@ -118,7 +142,7 @@ class Fabricant(models.Model):
     def __str__(self):
         return f"{self.abbreviation}"
 
-class modeleAvion(models.Model):
+class ModeleAvion(models.Model):
     nom = models.CharField(max_length=50)
     fabricant = models.ForeignKey(Fabricant, on_delete=models.SET_NULL,blank=True,null=True)
     nb_places = models.IntegerField(default=200,blank=True)
@@ -143,7 +167,7 @@ class Avion(models.Model):
         MAINTENANCE = "MAINT" "Maintenance"
     compagnie = models.ForeignKey(CompagnieAerienne, on_delete=models.CASCADE,related_name='avions')
     # on utilise pas CASCADE pour le modele au cas ou on aurait des avions en vol/fonctionnement en cours
-    modele = models.ForeignKey(modeleAvion, on_delete=models.SET_NULL,null=True)
+    modele = models.ForeignKey(ModeleAvion, on_delete=models.SET_NULL,null=True)
     est_a_maintenir = models.BooleanField(default=False,blank=True)
     est_amorti = models.BooleanField(default=False,blank=True)
     km_parcourus = models.IntegerField(default=0,blank=True)

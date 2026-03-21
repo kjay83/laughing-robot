@@ -1,5 +1,23 @@
 [
 {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$1200000$5QbH8mRSHcHGp2Eyd4746r$l5bPoGqMxoO6iyT1hgUu11ofLtmvRMF4Mg7NtFnnEkc=",
+        "last_login": "2026-03-20T16:38:28.037Z",
+        "is_superuser": true,
+        "username": "admin",
+        "first_name": "",
+        "last_name": "",
+        "email": "admin@admin.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2026-03-16T22:18:17.899Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
     "model": "aerial.pays",
     "pk": 1,
     "fields": {
@@ -431,7 +449,6 @@
         "proprietaire": 1,
         "date_creation": "2026-03-21T10:28:32.014Z",
         "niveau": 1,
-        "cash": "0.00",
         "cash_flow": "0.00",
         "created_at": "2026-03-21T10:28:32.014Z"
     }
@@ -446,7 +463,6 @@
         "proprietaire": 1,
         "date_creation": "2026-03-21T10:28:43.249Z",
         "niveau": 1,
-        "cash": "0.00",
         "cash_flow": "0.00",
         "created_at": "2026-03-21T10:28:43.249Z"
     }
@@ -461,7 +477,6 @@
         "proprietaire": 2,
         "date_creation": "2026-03-21T10:29:22.116Z",
         "niveau": 1,
-        "cash": "0.00",
         "cash_flow": "0.00",
         "created_at": "2026-03-21T10:29:22.116Z"
     }

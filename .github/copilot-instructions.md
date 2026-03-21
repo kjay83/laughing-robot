@@ -63,7 +63,7 @@ Admin: admin / admin
 - `CompagnieAerienne`: Airline companies (extends Entreprise)
 - `Banque`: Banks (extends Entreprise)
 - `Fabricant`: Aircraft manufacturers
-- `modeleAvion`: Aircraft models
+- `ModeleAvion`: Aircraft models
 - `Avion`: Individual aircraft
 - `Hub`: Airline headquarters/hubs
 - `LigneAerienne`: Airline routes with aircraft assignments
@@ -120,7 +120,7 @@ Avion.objects.filter(modele__pk=1)
 Avion.objects.filter(modele_id=1)
 
 # Wrong syntax:
-# Avion.objects.filter(modele=modeleAvion__pk=1)  # ✗
+# Avion.objects.filter(modele=ModeleAvion__pk=1)  # ✗
 ```
 
 ### First/Last Access
@@ -156,8 +156,8 @@ Hub (1) ──→ (M) LigneAerienne (1) ──→ Trajet
 LigneAerienne (M) ──→ (M) Avion
 
 Avion (M) ──→ (1) CompagnieAerienne
-Avion (M) ──→ (1) modeleAvion
-modeleAvion (M) ──→ (1) Fabricant
+Avion (M) ──→ (1) ModeleAvion
+ModeleAvion (M) ──→ (1) Fabricant
 
 Trajet (M) ──→ (M) DistanceEntreDeuxVilles
 DistanceEntreDeuxVilles (2x M) ──→ (1) Ville
