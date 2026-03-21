@@ -34,4 +34,4 @@ class Log(models.Model):
         return self.date_log >= timezone.now() - datetime.timedelta(days=1)
 
     def __str__(self):
-        return f"{self.id}|{self.vehicule.immatriculation}|{self.date_log}"
+        return f"{self.pk}|{self.vehicule.immatriculation}|{self.date_log}"

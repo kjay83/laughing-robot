@@ -36,20 +36,3 @@ def supprimer_players(request,player_id):
         player.delete()
         return redirect('aerial:liste_players_url')
     return render(request, 'aerial/player/confirmer_suppression_players.html' , {'player' : player})
-
-#TODO: supprimer cela plus tard, 
-# ne pas oublier aussi les fichiers templates et views et urls
-#Utilise uniquement our les tests, fournit des donnees de depart a l'application
-def initialize(request):
-    init_player('p1')
-    init_player('p2')
-
-    return redirect('aerial:liste_players_url')
-
-def init_player(alias_recherche:str):
-    try:
-        p = Player.objects.get(alias=alias_recherche)
-    except ObjectDoesNotExist:
-        p = Player(alias=alias_recherche)
-        p.save()
-    return p
