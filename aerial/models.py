@@ -56,6 +56,14 @@ class Player(models.Model):
     cash = models.DecimalField(default=0,max_digits=20, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    @property
+    def total_cash_flow(self):
+            """Cash flow généré/heure par toutes les entreprises"""
+            total = self.entreprises.aggregate(
+                total=models.Sum('cash_flow')
+            )['total']
+            return total if total is not None else 0
 
     def __str__(self):
         return f"{self.nom}"
@@ -67,7 +75,7 @@ class Player(models.Model):
         self.cash += amount
     
     def pay(self,amount):
-        self.cash -= amount  
+        self.cash -= amount    
 
 class Entreprise(models.Model):    
     # Attributs communs à TOUTES les entreprises (ex: capital, niveau)
@@ -82,7 +90,6 @@ class Entreprise(models.Model):
     proprietaire = models.ForeignKey('Player', on_delete=models.CASCADE, related_name='entreprises')
     date_creation = models.DateTimeField(auto_now_add=True)
     niveau = models.IntegerField(default=1)
-    cash = models.DecimalField(default=0,max_digits=20, decimal_places=2)
     cash_flow = models.DecimalField(default=0,max_digits=20, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)  
 

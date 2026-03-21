@@ -3,21 +3,24 @@
 
 
 {% block content %}
-<h1 class="text-2xl font-bold mb-5">DASHBOARD {{player.alias}} (N° {{player.id}})</h1>
-<div class="w-full mb-6 bg-base-100 flex gap-8">
-    
-    <div class="space-y-2 flex-1">
+<h1 class="text-2xl font-bold mb-5 text-center">DASHBOARD {{player.alias}} (N° {{player.id}})</h1>
+<!-- Statistiques globales du joueur -->
+<div class="w-full mb-6 bg-primary text-primary-content flex gap-8 rounded-lg p-6">
+    <div class="space-y-2 flex-1 text-center">
+        <div class="mb-4 text-3xl font-bold">{{player.entreprises.count|intcomma}}</div>
+        <p class="text-lg font-semibold">Entreprise(s)</p>
+    </div>
+    <div class="space-y-2 flex-1 text-center">
         <div class="mb-4 text-3xl font-bold">{{player.cash|intcomma}} XAF</div>
         <p class="text-lg font-semibold">Cash</p>
     </div>
-    <div class="space-y-2 flex-1">
-        <div class="mb-4 text-3xl font-bold">{{player.entreprises.count|intcomma}}</div>
-        <p class="text-lg font-semibold">Entreprises</p>
+    <div class="space-y-2 flex-1 text-center">
+        <div class="mb-4 text-3xl font-bold">{{player.total_cash_flow|intcomma}} XAF /h</div>
+        <p class="text-lg font-semibold">Cash Flow</p>
     </div>
-
-</div>
+</div> 
 <div class="w-full bg-base-200">
-    Profil <br><br>
+    -- Profil -- <br>
     <div class="mb-2">
         Nom : {{player.nom}} <br>
         Prenom : {{player.prenom}} <br>
@@ -27,7 +30,7 @@
         Modifié le : {{player.updated_at}} <br> 
     </div>
     <div class="space-x-2">
-        <a href="{% url 'aerial:dashboard_by_id_url' player.id %}" class="btn btn-primary">Dashboard</a>
+        <a href="{% url 'aerial:dashboard_url' player.id %}" class="btn btn-primary">Dashboard</a>
     </div>
 </div>
 {% endblock %}

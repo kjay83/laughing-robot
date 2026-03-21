@@ -39,13 +39,15 @@ def supprimer_players(request,player_id):
 
 
 
-def dashboard_by_id(request,player_id):
-    player = get_object_or_404(Player, pk=player_id)
-    context = {"player": player}
-    return render(request, "aerial/dashboard_player.html", context)
-
-def dashboard_by_alias(request,player_alias):
-    player = get_object_or_404(Player, alias=player_alias)
+def dashboard(request, identifier):
+    try:
+        # Essayer d'abord comme ID (entier)
+        player_id = int(identifier)
+        player = get_object_or_404(Player.objects.prefetch_related('entreprises'), pk=player_id)
+    except ValueError:
+        # Pas un ID, chercher par alias
+        player = get_object_or_404(Player.objects.prefetch_related('entreprises'), alias=identifier)
+    
     context = {"player": player}
     return render(request, "aerial/dashboard_player.html", context)
 
