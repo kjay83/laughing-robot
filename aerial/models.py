@@ -53,21 +53,21 @@ class Player(models.Model):
     prenom = models.CharField(default='NON DEFINI',max_length=200,blank=True,null=True)
     alias = models.CharField(default='ALIAS',max_length=200,unique=True)
     email = models.EmailField(default='aucun@fail.com',max_length=200,blank=True,null=True)
-    money = models.DecimalField(default=0,max_digits=20, decimal_places=2)
+    cash = models.DecimalField(default=0,max_digits=20, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.nom}"
     
-    def initialize(self,starting_money):
-        self.money = starting_money
+    def initialize(self,starting_cash):
+        self.cash = starting_cash
     
     def receive(self,amount):
-        self.money += amount
+        self.cash += amount
     
     def pay(self,amount):
-        self.money -= amount  
+        self.cash -= amount  
 
 class Entreprise(models.Model):    
     # Attributs communs à TOUTES les entreprises (ex: capital, niveau)

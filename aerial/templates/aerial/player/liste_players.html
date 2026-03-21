@@ -17,7 +17,7 @@
             <div class="space-x-2">
                 <p class="badge badge-soft badge-secondary">Joueur N° {{player.id}}</p>
                 <p class="font-bold text-lg">({{player.alias}}) {{player.nom|upper}} {{player.prenom|title}}</p>
-                <p class="badge badge-accent">{{player.money|intcomma}} XAF</p>
+                <p class="badge badge-accent">{{player.cash|intcomma}} XAF</p>
             </div>
             <div class="space-x-2">
                 <a href="{% url 'aerial:detail_players_url' player.id %}" class="btn btn-primary btn-sm">Détails</a>

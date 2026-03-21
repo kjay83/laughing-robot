@@ -386,7 +386,7 @@
         "prenom": "Halicor",
         "alias": "p1halddj",
         "email": "hald@weje.com",
-        "money": "0.00",
+        "cash": "0.00",
         "created_at": "2026-03-20T17:23:01.239Z",
         "updated_at": "2026-03-20T17:24:01.239Z"
     }
@@ -399,7 +399,7 @@
         "prenom": "Ruben",
         "alias": "p2rbenPlan",
         "email": "rueb@planga.com",
-        "money": "0.00",
+        "cash": "0.00",
         "created_at": "2026-03-20T17:24:01.482Z",
         "updated_at": "2026-03-20T17:24:01.482Z"
     }
@@ -412,7 +412,7 @@
         "prenom": "NON DEFINI",
         "alias": "p1",
         "email": "aucun@fail.com",
-        "money": "0.00",
+        "cash": "0.00",
         "created_at": "2026-03-20T17:58:14.199Z",
         "updated_at": "2026-03-20T17:58:14.199Z"
     }
@@ -425,7 +425,7 @@
         "prenom": "NON DEFINI",
         "alias": "p2",
         "email": "aucun@fail.com",
-        "money": "0.00",
+        "cash": "0.00",
         "created_at": "2026-03-20T17:58:14.343Z",
         "updated_at": "2026-03-20T17:58:14.343Z"
     }

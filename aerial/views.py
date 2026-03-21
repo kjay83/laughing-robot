@@ -36,3 +36,22 @@ def supprimer_players(request,player_id):
         player.delete()
         return redirect('aerial:liste_players_url')
     return render(request, 'aerial/player/confirmer_suppression_players.html' , {'player' : player})
+
+
+
+def dashboard_by_id(request,player_id):
+    player = get_object_or_404(Player, pk=player_id)
+    context = {"player": player}
+    return render(request, "aerial/dashboard_player.html", context)
+
+def dashboard_by_alias(request,player_alias):
+    player = get_object_or_404(Player, alias=player_alias)
+    context = {"player": player}
+    return render(request, "aerial/dashboard_player.html", context)
+
+
+
+def detail_players(request,player_id):
+    player = get_object_or_404(Player, pk=player_id)
+    context = {"player": player}
+    return render(request, "aerial/player/detail_players.html", context)
