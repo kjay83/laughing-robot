@@ -39,8 +39,12 @@ class DistanceEntreDeuxVilles(models.Model):
 class Trajet(models.Model):
     nom = models.CharField(max_length=300,blank=True,null=True)
     km = models.IntegerField(default=1,blank=True)
-    nb_etapes = models.IntegerField(default=2,blank=True)
-    
+    nb_escales = models.IntegerField(default=0,blank=True)
+    depart = models.ForeignKey(Ville,on_delete=models.CASCADE,related_name="debut",blank=True,null=True)
+    arrivee = models.ForeignKey(Ville,on_delete=models.CASCADE, related_name="fin",blank=True,null=True)
+    #a partir d'une escale, sert pour faire le lien entre les trancons d'un trajet,
+    etapes = models.ManyToManyField(DistanceEntreDeuxVilles,blank=True)
+        
     def __str__(self):
         return f"{self.nom}"
     
@@ -63,19 +67,18 @@ class Player(models.Model):
         self.money += amount
     
     def pay(self,amount):
-        self.money -= amount
-    
-
+        self.money -= amount    
 
 class CompagnieAerienne(models.Model):
     class TypeEntreprise(models.TextChoices):
         COMPANIE_AERIENNE = "AER", "Companie Aerienne"
         BANQUE = "BQ", "Banque"
     type_entreprise =models.CharField(default=TypeEntreprise.COMPANIE_AERIENNE,
-                                      choices=TypeEntreprise,
-                                      max_length=25, blank=True, null=True)  
+                                           choices=TypeEntreprise, max_length=25, blank=True, null=True)  
+
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
-    nom = models.CharField(default="AIR AERIAL",max_length=200,blank=True,null=True)
+    nom = models.CharField(default="AIR AERIAL",max_length=200,
+                           blank=True,null=True)
     abbreviation = models.CharField(default="AA",max_length=5,unique=True)
     cash = models.DecimalField(default=0,max_digits=20, decimal_places=2)
     cash_flow = models.DecimalField(default=0,max_digits=20, decimal_places=2)
@@ -138,7 +141,7 @@ class Avion(models.Model):
         self.est_a_maintenir = False
 
     def __str__(self):
-        return f"{self.id}_{self.nom_court}"
+        return f"{self.compagnie.abbreviation}_{self.nom_court}"
 
 
 
@@ -148,9 +151,12 @@ class Hub(models.Model):
     ville = models.ForeignKey(Ville, on_delete=models.CASCADE)
     
     def __str__(self):
-        return f"{self.ide}_{self.ville}"
+        return f"{self.companie.abbreviation}_{self.ville}"
 
 class LigneAerienne(models.Model):
     trajet = models.ForeignKey(Trajet,on_delete=models.CASCADE)
     hub = models.ForeignKey(Hub,on_delete=models.CASCADE)
     avions = models.ManyToManyField(Avion)
+    
+    def __str__(self):
+        return f"{self.trajet}_{self.hub}"
