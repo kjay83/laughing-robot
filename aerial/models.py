@@ -270,13 +270,13 @@ class MiniJeuMangue(models.Model):
         return Decimal(str(next_level_cash_flow))
     
     def level_up(self):
-        current_cost = self.get_level_up_cost()
+        current_cost = self.get_level_up_cost
     
         if self.player.cash >= current_cost:
             self.player.cash -= current_cost
 
             # On applique le nouveau coefficient de gain
-            self.cash_flow = self.get_next_level_cash_flow()
+            self.cash_flow = self.get_next_level_cash_flow
 
             #on met a jour le lvl
             self.lvl += 1

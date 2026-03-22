@@ -1,0 +1,13 @@
+{% load humanize %}
+<div id="stat-cash" hx-swap-oob="true" class="stat-value ">{{player_cash|floatformat:2|intcomma}} XAF</div>
+<div id="stat-level" hx-swap-oob="true" class="stat-value">{{minijeu_level|intcomma}}</div>
+<div id="stat-cash-flow" hx-swap-oob="true" class="stat-value ">{{minijeu_cash_flow|floatformat:2|intcomma}}</div>
+ 
+<div id="stat-level-up-cost" hx-swap-oob="true" class="font-semibold outline-dashed outline-1 outline-primary p-2">
+    - Prochain niveau - <br> 
+    <i>Coûts: {{minijeu_level_up_cost|floatformat:2|intcomma}} XAF</i>
+</div> 
+<div id="stat-next-level-cash-flow" hx-swap-oob="true" class="font-semibold outline-dashed outline-1 outline-primary p-2">
+    - Prochain niveau - <br> 
+    <i>{{minijeu_next_level_cash_flow|floatformat:2|intcomma}} XAF/clic</i>
+</div> 

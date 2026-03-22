@@ -14,5 +14,6 @@ urlpatterns = [
     #page de depart pour les joueurs ,elle affiche des statistiques et des liens vers les minijeux
     path('dashboard/<str:identifier>', views.dashboard, name="dashboard_url"),
     path('joueur/<int:player_id>/mangue', views.minijeu_mangue, name="minijeu_mangue_url"),
-    path('joueur/<int:player_id>/mangue/clic', views.clic_mangue, name="clic_mangue_url"), 
+    path('joueur/<int:player_id>/mangue/cash_up', views.clic_mangue_cash_up, name="clic_mangue_cash_up_url"), 
+    path('joueur/<int:player_id>/mangue/level_up', views.clic_mangue_level_up, name="clic_mangue_level_up_url"), 
 ]

@@ -62,15 +62,38 @@ def minijeu_mangue(request, player_id):
     context = {"player": player, "minijeu": minijeu}
     return render(request, "aerial/minijeu_mangue.html", context)
 
-# Vue pour gérer les clics sur le manguier
-def clic_mangue(request, player_id):
+# Vue pour gérer les clics sur le manguier (cash up)
+def clic_mangue_cash_up(request, player_id):
     player = get_object_or_404(Player, pk=player_id)
     minijeu, created = MiniJeuMangue.objects.get_or_create(player=player)
-    context = {"player": player, "minijeu": minijeu}
     # On ajoute le cash_flow au cash actuel
     player.cash += minijeu.cash_flow
     player.save()
     
     # On renvoie juste le petit bout de texte (ou un template partiel)
     # avec le nouveau montant formaté
-    return render(request, 'aerial/partials/minijeu_mangue/stat_cash_amount.html', {'player_cash': player.cash})
+    context = {'player_cash': player.cash}
+    return render(request, 'aerial/partials/minijeu_mangue/stat_cash_amount.html', context )
+
+# Vue pour gérer les clics sur le bouton levelup du manguier (lv up)
+def clic_mangue_level_up(request, player_id):
+    # SUPPRESSION De cette ligne pour eviter les soucis de 
+    # désynchronisation d'instances d'objets en mémoire (ou "Object Identity" dans l'ORM).
+    #on utilise une seule source de verite au lieu d'avoir 2 variables pointant vers le même enregistrement en #bdd mais qui ne sont pas synchronisées (player et minijeu.player)
+    # #player = get_object_or_404(Player, pk=player_id)
+    minijeu, created = MiniJeuMangue.objects.get_or_create(player=get_object_or_404(Player, pk=player_id))
+    print(f"Player cash before level up: {minijeu.player.cash}")
+    print(f"Level before level up: {minijeu.lvl}")
+    minijeu.level_up()
+    
+    # On renvoie juste le petit bout de texte (ou un template partiel)
+    # avec le nouveau montant formaté
+    print(f"Player cash after level up: {minijeu.player.cash}")
+    print(f"Level ater level up: {minijeu.lvl}")
+    context = {'player_cash': minijeu.player.cash,
+                'minijeu_level': minijeu.lvl,
+                'minijeu_cash_flow': minijeu.cash_flow,
+                'minijeu_level_up_cost': minijeu.get_level_up_cost,
+                'minijeu_next_level_cash_flow': minijeu.get_next_level_cash_flow}
+    return render(request, 'aerial/partials/minijeu_mangue/stat_level_cash_flow_amount.html', context )
+    
