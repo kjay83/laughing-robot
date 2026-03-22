@@ -619,7 +619,7 @@
     "model": "aerial.hub",
     "pk": 1,
     "fields": {
-        "companie": 1,
+        "compagnie": 1,
         "ville": 1
     }
 },
@@ -627,7 +627,7 @@
     "model": "aerial.hub",
     "pk": 2,
     "fields": {
-        "companie": 3,
+        "compagnie": 3,
         "ville": 6
     }
 },
@@ -635,7 +635,7 @@
     "model": "aerial.hub",
     "pk": 3,
     "fields": {
-        "companie": 1,
+        "compagnie": 1,
         "ville": 7
     }
 },

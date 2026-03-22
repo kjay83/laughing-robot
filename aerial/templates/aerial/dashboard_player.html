@@ -1,6 +1,5 @@
-{% extends "aerial/base.html" %}
+{% extends "aerial/base_pour_joueur_connecte.html" %}
 {% load humanize %}
-
 
 {% block content %}
 <h1 class="text-2xl font-bold mb-5 text-center">DASHBOARD {{player.alias}} (N° {{player.id}})</h1>
@@ -28,9 +27,6 @@
         Email : {{player.email}} <br>
         Créé le : {{player.created_at}} <br> 
         Modifié le : {{player.updated_at}} <br> 
-    </div>
-    <div class="space-x-2">
-        <a href="{% url 'aerial:dashboard_url' player.id %}" class="btn btn-primary">Dashboard</a>
     </div>
 </div>
 {% endblock %}

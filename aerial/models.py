@@ -219,13 +219,13 @@ class Avion(models.Model):
 
 
 
-#un hub est le QG d'ou partent tous les avions d'une companie
+#un hub est le QG d'ou partent tous les avions d'une compagnie
 class Hub(models.Model):
-    companie = models.ForeignKey(CompagnieAerienne, on_delete=models.CASCADE)
+    compagnie = models.ForeignKey(CompagnieAerienne, on_delete=models.CASCADE)
     ville = models.ForeignKey(Ville, on_delete=models.CASCADE)
     
     def __str__(self):
-        return f"{self.companie.abbreviation}_{self.ville}"
+        return f"{self.compagnie.abbreviation}_{self.ville}"
 
 class LigneAerienne(models.Model):
     trajet = models.ForeignKey(Trajet,on_delete=models.CASCADE)

@@ -60,7 +60,7 @@ Admin: admin / admin
 - `DistanceEntreDeuxVilles`: Distances between cities
 - `Player`: Game players
 - `Entreprise`: Base enterprise (multi-table inheritance)
-- `CompagnieAerienne`: Airline companies (extends Entreprise)
+- `CompagnieAerienne`: Airline compagnies (extends Entreprise)
 - `Banque`: Banks (extends Entreprise)
 - `Fabricant`: Aircraft manufacturers
 - `ModeleAvion`: Aircraft models
@@ -84,7 +84,7 @@ Admin: admin / admin
 
 #### Fixtures
 - `aerial/fixtures/complet_v2.json` - Base data (countries, cities, distances, routes, players, manufacturers, aircraft models)
-- `aerial/fixtures/test_companies_aeriennes3.json` - Test data with airline companies
+- `aerial/fixtures/test_compagnies_aeriennes3.json` - Test data with airline compagnies
 
 ## Django ORM Quirks & Gotchas
 

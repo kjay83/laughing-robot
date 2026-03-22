@@ -40,6 +40,19 @@ def supprimer_players(request,player_id):
 
 
 def dashboard(request, identifier):
+    """
+    Affiche le dashboard d'un joueur.
+    
+    Le dashboard est accessible par son ID (entier) ou par son alias.
+    Il affiche les statistiques globales du joueur, ainsi que des liens vers ses minijeux.
+    
+    Parameters:
+        request (HttpRequest): La requête HTTP
+        identifier (str): L'ID ou l'alias du joueur
+
+    Returns:
+        HttpResponse: La page HTML du dashboard
+    """
     try:
         # Essayer d'abord comme ID (entier)
         player_id = int(identifier)
@@ -72,6 +85,7 @@ def clic_mangue_cash_up(request, player_id):
     
     # On renvoie juste le petit bout de texte (ou un template partiel)
     # avec le nouveau montant formaté
+    player.refresh_from_db()  # Assure que player a les données les plus récentes de la base de données
     context = {'player_cash': player.cash}
     return render(request, 'aerial/partials/minijeu_mangue/stat_cash_amount.html', context )
 
@@ -97,3 +111,20 @@ def clic_mangue_level_up(request, player_id):
                 'minijeu_next_level_cash_flow': minijeu.get_next_level_cash_flow}
     return render(request, 'aerial/partials/minijeu_mangue/stat_level_cash_flow_amount.html', context )
     
+def dashboard_aviation(request, player_id):
+    player = get_object_or_404(Player, pk=player_id)
+    compagnies_aeriennes = CompagnieAerienne.objects.prefetch_related('avions').filter(proprietaire__pk=player.pk)
+    #print(f"Player {player.id} is {player.alias} and has {player.cash} cash")
+    #print(f"Companies aeriennes for player {player.id}: {compagnies_aeriennes.count()}")
+    #for c in compagnies_aeriennes:
+        #print(f"dans liste compagnies aeriennes : ID=:{c.id} - {c} - ({c.avions.count()} avions)")
+        #for a in c.avions.all():
+            #print(f"--- avion N° {a.id} : - {a}")
+    
+    #avions = Avion.objects.prefetch_related('compagnie').filter(compagnie__proprietaire__pk = player.pk)
+    #for a in avions:
+    #    print(f"dans liste avions : ID=:{a.id} - {a}")
+    #print(f"Avions for player in avions = {avions.count()}")
+    #context = {"player": player, "compagnies_aeriennes": compagnies_aeriennes, "avions": avions}
+    context = {"player": player, "compagnies_aeriennes": compagnies_aeriennes}
+    return render(request, "aerial/aviation/dashboard_aviation.html", context)

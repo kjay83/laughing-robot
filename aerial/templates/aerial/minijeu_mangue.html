@@ -1,4 +1,4 @@
-{% extends "aerial/base.html" %}
+{% extends "aerial/base_pour_joueur_connecte.html" %}
 {% load humanize %}
 
 {% block css_header %}
@@ -55,12 +55,6 @@
             - Prochain niveau - <br> 
             <i>{{minijeu.get_next_level_cash_flow|floatformat:2|intcomma}} XAF/clic</i>
         </div>        
-    </div>
-</div>
-<div class="w-full bg-base-200">
-    ddf
-    <div class="space-x-2">
-        <a href="{% url 'aerial:dashboard_url' player.id %}" class="btn btn-primary">Dashboard</a>
     </div>
 </div>
 {% endblock %}

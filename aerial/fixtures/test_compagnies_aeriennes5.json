@@ -4,7 +4,7 @@
     "pk": 1,
     "fields": {
         "password": "pbkdf2_sha256$1200000$5QbH8mRSHcHGp2Eyd4746r$l5bPoGqMxoO6iyT1hgUu11ofLtmvRMF4Mg7NtFnnEkc=",
-        "last_login": "2026-03-20T16:38:28.037Z",
+        "last_login": "2026-03-22T20:44:45.048Z",
         "is_superuser": true,
         "username": "admin",
         "first_name": "",
@@ -395,9 +395,10 @@
         "prenom": "Halicor",
         "alias": "p1halddj",
         "email": "hald@weje.com",
-        "cash": "0.00",
+        "cash": "64.00",
         "created_at": "2026-03-20T17:23:01.239Z",
-        "updated_at": "2026-03-20T17:24:01.239Z"
+        "updated_at": "2026-03-22T11:19:08.930Z",
+        "biens_immobiliers": []
     }
 },
 {
@@ -408,9 +409,10 @@
         "prenom": "Ruben",
         "alias": "p2rbenPlan",
         "email": "rueb@planga.com",
-        "cash": "0.00",
+        "cash": "13.64",
         "created_at": "2026-03-20T17:24:01.482Z",
-        "updated_at": "2026-03-20T17:24:01.482Z"
+        "updated_at": "2026-03-22T13:35:00.663Z",
+        "biens_immobiliers": []
     }
 },
 {
@@ -423,7 +425,8 @@
         "email": "aucun@fail.com",
         "cash": "0.00",
         "created_at": "2026-03-20T17:58:14.199Z",
-        "updated_at": "2026-03-20T17:58:14.199Z"
+        "updated_at": "2026-03-20T17:58:14.199Z",
+        "biens_immobiliers": []
     }
 },
 {
@@ -436,7 +439,22 @@
         "email": "aucun@fail.com",
         "cash": "0.00",
         "created_at": "2026-03-20T17:58:14.343Z",
-        "updated_at": "2026-03-20T17:58:14.343Z"
+        "updated_at": "2026-03-20T17:58:14.343Z",
+        "biens_immobiliers": []
+    }
+},
+{
+    "model": "aerial.player",
+    "pk": 12,
+    "fields": {
+        "nom": "Test",
+        "prenom": "NON DEFINI",
+        "alias": "john_doe",
+        "email": "aucun@fail.com",
+        "cash": "0.00",
+        "created_at": "2026-03-21T22:04:03.949Z",
+        "updated_at": "2026-03-21T22:04:03.949Z",
+        "biens_immobiliers": []
     }
 },
 {
@@ -598,6 +616,58 @@
     }
 },
 {
+    "model": "aerial.avion",
+    "pk": 4,
+    "fields": {
+        "compagnie": 2,
+        "modele": 2,
+        "est_a_maintenir": false,
+        "est_amorti": false,
+        "km_parcourus": 0,
+        "nom_court": "MAQUIS1",
+        "statut": "HANGAR"
+    }
+},
+{
+    "model": "aerial.avion",
+    "pk": 5,
+    "fields": {
+        "compagnie": 2,
+        "modele": 2,
+        "est_a_maintenir": false,
+        "est_amorti": false,
+        "km_parcourus": 0,
+        "nom_court": "MAQUIS2",
+        "statut": "HANGAR"
+    }
+},
+{
+    "model": "aerial.avion",
+    "pk": 6,
+    "fields": {
+        "compagnie": 2,
+        "modele": 2,
+        "est_a_maintenir": false,
+        "est_amorti": false,
+        "km_parcourus": 0,
+        "nom_court": "MAQUIS3",
+        "statut": "HANGAR"
+    }
+},
+{
+    "model": "aerial.avion",
+    "pk": 7,
+    "fields": {
+        "compagnie": 2,
+        "modele": 1,
+        "est_a_maintenir": false,
+        "est_amorti": false,
+        "km_parcourus": 0,
+        "nom_court": "SILORL",
+        "statut": "HANGAR"
+    }
+},
+{
     "model": "aerial.hub",
     "pk": 1,
     "fields": {
@@ -619,6 +689,24 @@
     "fields": {
         "compagnie": 1,
         "ville": 7
+    }
+},
+{
+    "model": "aerial.minijeumangue",
+    "pk": 1,
+    "fields": {
+        "player": 1,
+        "lvl": 1,
+        "cash_flow": "1.00"
+    }
+},
+{
+    "model": "aerial.minijeumangue",
+    "pk": 2,
+    "fields": {
+        "player": 2,
+        "lvl": 3,
+        "cash_flow": "2.00"
     }
 }
 ]
