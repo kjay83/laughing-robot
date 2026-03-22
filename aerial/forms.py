@@ -4,7 +4,7 @@ from .models import Player
 class PlayerForm(forms.ModelForm):
     class Meta:
         model = Player
-        fields = ["nom","prenom","alias","email"]
+        fields = '__all__'
         widgets = {
             'nom' : forms.TextInput(attrs= {
                 'class' : 'input w-full',

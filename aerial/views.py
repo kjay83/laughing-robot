@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404,redirect
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
-from .models import Player
+from .models import *
 from .forms import PlayerForm
 
 # Create your views here.
@@ -51,9 +51,26 @@ def dashboard(request, identifier):
     context = {"player": player}
     return render(request, "aerial/dashboard_player.html", context)
 
-
-
 def detail_players(request,player_id):
     player = get_object_or_404(Player, pk=player_id)
     context = {"player": player}
     return render(request, "aerial/player/detail_players.html", context)
+
+def minijeu_mangue(request, player_id):
+    player = get_object_or_404(Player, pk=player_id)
+    minijeu, created = MiniJeuMangue.objects.get_or_create(player=player)
+    context = {"player": player, "minijeu": minijeu}
+    return render(request, "aerial/minijeu_mangue.html", context)
+
+# Vue pour gérer les clics sur le manguier
+def clic_mangue(request, player_id):
+    player = get_object_or_404(Player, pk=player_id)
+    minijeu, created = MiniJeuMangue.objects.get_or_create(player=player)
+    context = {"player": player, "minijeu": minijeu}
+    # On ajoute le cash_flow au cash actuel
+    player.cash += minijeu.cash_flow
+    player.save()
+    
+    # On renvoie juste le petit bout de texte (ou un template partiel)
+    # avec le nouveau montant formaté
+    return render(request, 'aerial/partials/minijeu_mangue/stat_cash_amount.html', {'player_cash': player.cash})

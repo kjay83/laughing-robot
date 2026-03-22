@@ -8,9 +8,12 @@ NOTES POUR LES AVIONS:
 - une ligne aerienne ne peut avoir qu'un seul hub
 - seuls quelques villes peuvent etre des hub
 '''
+from decimal import Decimal
+
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.core.exceptions import ValidationError
+import math
 
 class Pays(models.Model):
     nom = models.CharField(max_length=100,blank=True,null=True)
@@ -49,15 +52,38 @@ class Trajet(models.Model):
         
     def __str__(self):
         return f"{self.nom}"
-    
+
+
+
+class TypeBienImmobilier(models.TextChoices):
+    APPARTEMENT = "APPART", "Appartement" 
+    VILLA = "VILLA", "Villa"
+    HOTEL = "HOTEL", "Hôtel"
+    COMMERCE = "COMMERCE", "Commerce"
+    BUREAUX = "BUREAUX", "Bureaux"
+    ENTREPOT = "ENTREPOT", "Entrepôt"
+    MANOIR = "MANOIR", "Manoir" 
+    CHATEAU = "CHATEAU", "Château" 
+ 
+class BienImmobilier(models.Model):
+    nom = models.CharField(max_length=100,blank=True,null=True, unique=True)
+    prix = models.DecimalField(default=0,max_digits=20, decimal_places=2,blank=True,null=True)
+    ville = models.ForeignKey(Ville, on_delete=models.CASCADE)
+    image_url = models.URLField(max_length=200,blank=True,null=True)
+    cash_flow = models.DecimalField(default=0,max_digits=20, decimal_places=2,blank=True,null=True)
+    lvl = models.IntegerField(default=1,blank=True,null=True)
+    type_bien_immobilier = models.CharField(default=TypeBienImmobilier.VILLA, choices=TypeBienImmobilier, max_length=10, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
 class Player(models.Model):
     nom = models.CharField(max_length=200,blank=True,null=True)
     prenom = models.CharField(default='NON DEFINI',max_length=200,blank=True,null=True)
     alias = models.CharField(default='ALIAS',max_length=200,unique=True)
     email = models.EmailField(default='aucun@fail.com',max_length=200,blank=True,null=True)
     cash = models.DecimalField(default=0,max_digits=20, decimal_places=2)
+    biens_immobiliers = models.ManyToManyField(BienImmobilier, blank=True, related_name='proprietaires')
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True,editable=False)
     
     @property
     def total_cash_flow(self):
@@ -208,3 +234,53 @@ class LigneAerienne(models.Model):
     
     def __str__(self):
         return f"{self.trajet}_{self.hub}"
+    
+class MiniJeuMangue(models.Model):
+    player = models.ForeignKey(Player, on_delete=models.CASCADE)
+    lvl = models.IntegerField(default=1,blank=True,null=True)
+    #cash genere par click
+    cash_flow = models.DecimalField(default=1.00,max_digits=20, decimal_places=2,blank=True,null=True)
+    
+    def get_coefficient_cash_flow(self, level: int) -> float:
+    # Formule : 1.1 + (level * 0.1) + (level^2 / 100)
+    # Au niveau 1 : ~1.2
+    # Au niveau 10 : ~3.1
+    # Au niveau 50 : ~31.1 (Le gain explose !)
+        coefficient = round(1.1 + (level * 0.1) + (math.pow(level, 2) / 100), 2)
+        return Decimal(str(coefficient))
+    
+    def get_coefficient_upgrade_cost(self, level: int) -> float:
+    # Formule : Base * (1.5 ^ level)
+    # Chaque niveau coûte 50% de plus que le précédent.
+    # C'est ce qui rend le jeu "plus long" au fur et à mesure.
+    # NB: Sile jeu devient trop dur trop vite, baisse le 1.5 du coût à 1.15 ou 1.2
+        coefficient = round(math.pow(1.5, level), 2)
+        return Decimal(str(coefficient))
+    
+    @property
+    def get_level_up_cost(self) -> float:
+        #autre methode : return 10 * (self.lvl ** 2)
+        couts_de_base = 10.00
+        couts_finaux = couts_de_base * float(self.get_coefficient_upgrade_cost(self.lvl))
+        return Decimal(str(couts_finaux))
+    
+    @property
+    def get_next_level_cash_flow(self) -> float:        
+        next_level_cash_flow =  self.cash_flow * self.get_coefficient_cash_flow(self.lvl+1)
+        return Decimal(str(next_level_cash_flow))
+    
+    def level_up(self):
+        current_cost = self.get_level_up_cost()
+    
+        if self.player.cash >= current_cost:
+            self.player.cash -= current_cost
+
+            # On applique le nouveau coefficient de gain
+            self.cash_flow = self.get_next_level_cash_flow()
+
+            #on met a jour le lvl
+            self.lvl += 1
+
+            #sauvegarde des changements en bdd
+            self.save()
+            self.player.save()

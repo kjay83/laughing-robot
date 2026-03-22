@@ -1,0 +1,60 @@
+{% extends "aerial/base.html" %}
+{% load humanize %}
+
+{% block css_header %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/minijeu_mangue/custom.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<h1 class="text-2xl font-bold mb-5 text-center">MINI JEU MANGUE {{player.alias}} (N° {{player.id}})</h1>
+<!-- Statistiques globales du joueur -->
+<div class="mb-3 bg-secondary text-primary-content flex gap-8 rounded-lg">
+    <div class="stat place-items-center font-bold">
+        <div class="stat-title">CASH</div>
+        <div id="stat-cash" class="stat-value ">{{player.cash|floatformat:2|intcomma}} XAF</div>
+    </div>
+</div> 
+<div>
+    <!-- affichage image cliquable-->
+    {% load static %}
+    <!--img id="manguier" src="{% static 'images/minijeu_mangue/manguier3.png' %}" alt="Ramasser la mangues" class="w-50 h-50 object-cover mx-auto"--> 
+    <img id="manguier" src="{% static 'images/minijeu_mangue/manguier3.png' %}" alt="Ramasser les mangues" 
+         class="ml-10 h-85 object-cover mx-autocursor-pointer active:scale-95 transition-transform"
+         hx-post="{% url 'aerial:clic_mangue_url' player.id %}" 
+         hx-target="#stat-cash" 
+         hx-swap="innerHTML"
+         hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+    <p class="text-center mb-2">Cliquer pour récolter du cash !</p>
+</div>
+<div class="w-full mb-6 bg-secondary text-primary-content flex gap-8 rounded-lg p-3">    
+    <div class="space-y-2 flex-1 text-center">
+        <div class="stat place-items-center">
+            <div class="stat-title">NIVEAU</div>
+            <div class="stat-value ">{{minijeu.lvl|intcomma}}</div>
+        </div>
+        <div class="font-semibold outline-dashed outline-1 outline-primary p-2">
+            - Prochain niveau - <br> 
+            <i>Coûts: {{minijeu.get_level_up_cost|floatformat:2|intcomma}} XAF</i>
+            <button class="btn btn-neutral btn-xs">Niveau +1</button>
+        </div>        
+    </div>   
+    <div class="space-y-2 flex-1 text-center">
+        <div class="stat place-items-center">
+            <div class="stat-title">CASH FLOW</div>
+            <div class="stat-value ">{{minijeu.cash_flow|floatformat:2|intcomma}}</div>
+        </div>
+        <div class="font-semibold outline-dashed outline-1 outline-primary p-2">
+            - Prochain niveau - <br> 
+            <i>{{minijeu.get_next_level_cash_flow|floatformat:2|intcomma}} XAF/clic</i>
+        </div>        
+    </div>
+</div>
+<div class="w-full bg-base-200">
+    ddf
+    <div class="space-x-2">
+        <a href="{% url 'aerial:dashboard_url' player.id %}" class="btn btn-primary">Dashboard</a>
+    </div>
+</div>
+{% endblock %}
