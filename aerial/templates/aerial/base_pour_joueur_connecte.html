@@ -2,7 +2,7 @@
 {% load humanize %}
 
 {% block nav_body %}
-    <a href="{% url 'aerial:dashboard_url' player.id %}" class="btn btn-primary btn-sm">DASHBOARD</a>
+    <a href="{% url 'aerial:dashboard_url_by_id' player.id %}" class="btn btn-primary btn-sm">DASHBOARD</a>
     <a href="{% url 'aerial:minijeu_mangue_url' player.id %}" class="btn btn-primary btn-sm">Mangue</a>
     <a href="{% url 'aerial:dashboard_aviation_url' player.id %}" class="btn btn-primary btn-sm">Aviation</a>
 {% endblock %}

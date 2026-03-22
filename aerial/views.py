@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 from .models import *
 from .forms import PlayerForm
+from django.core.paginator import Paginator
 
 # Create your views here.
 def liste_players(request):
@@ -39,7 +40,7 @@ def supprimer_players(request,player_id):
 
 
 
-def dashboard(request, identifier):
+def dashboard_by_str(request, identifier):
     """
     Affiche le dashboard d'un joueur.
     
@@ -61,6 +62,12 @@ def dashboard(request, identifier):
         # Pas un ID, chercher par alias
         player = get_object_or_404(Player.objects.prefetch_related('entreprises'), alias=identifier)
     
+    context = {"player": player}
+    return render(request, "aerial/dashboard_player.html", context)
+
+
+def dashboard_by_id(request, player_id):    
+    player = get_object_or_404(Player.objects.prefetch_related('entreprises'), pk=player_id)
     context = {"player": player}
     return render(request, "aerial/dashboard_player.html", context)
 
@@ -121,10 +128,57 @@ def dashboard_aviation(request, player_id):
         #for a in c.avions.all():
             #print(f"--- avion N° {a.id} : - {a}")
     
-    #avions = Avion.objects.prefetch_related('compagnie').filter(compagnie__proprietaire__pk = player.pk)
-    #for a in avions:
-    #    print(f"dans liste avions : ID=:{a.id} - {a}")
-    #print(f"Avions for player in avions = {avions.count()}")
+    avions = Avion.objects.prefetch_related('compagnie').filter(compagnie__proprietaire__pk = player.pk).order_by("compagnie__abbreviation","nom_court") 
+    for a in avions:
+        print(f"dans liste avions : ID=:{a.id} - {a}")
+    print(f"Avions for player in avions = {avions.count()}")
     #context = {"player": player, "compagnies_aeriennes": compagnies_aeriennes, "avions": avions}
-    context = {"player": player, "compagnies_aeriennes": compagnies_aeriennes}
+
+    #on recupere le mot cle de recherche
+    query = request.GET.get('q', '')    
+    # On récupère le nombre de pages choisi, sinon 10 par défaut
+    par_page = request.GET.get('per_page', 10)
+    
+    # Filtrage : on cherche dans l'immatriculation du véhicule lié
+    tableau = Avion.objects.prefetch_related('compagnie').filter(compagnie__proprietaire__pk = player.pk).order_by("compagnie__abbreviation","nom_court")
+    if query:
+        tableau = avions.filter(nom_court__icontains=query)
+    
+    # On définit 10 logs par page
+    paginator = Paginator(tableau, par_page) 
+    
+    # On récupère le numéro de la page dans l'URL (ex: ?page=2)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        "avions": page_obj, 
+        'par_page': int(par_page),
+        'query': query,
+        'player': player
+    }
+
+    #context = {"player": player, "compagnies_aeriennes": compagnies_aeriennes, "avions": avions}
     return render(request, "aerial/aviation/dashboard_aviation.html", context)
+
+
+def acheter_avion(request, player_id):
+    player = get_object_or_404(Player, pk=player_id)
+    context = {"player": player}
+    return HttpResponse(f"AVION ACHAT: contexte is = to {context}")
+    #return render(request, "aerial/aviation/acheter_avion.html", context)
+
+
+def gerer_avion(request, player_id, avion_id):
+    player = get_object_or_404(Player, pk=player_id)
+    avion = get_object_or_404(Avion, pk=avion_id)
+    context = {"player": player, "avion": avion}
+    return HttpResponse(f"AVION GERER: contexte is = to {context}")
+    #return render(request, "aerial/aviation/acheter_avion.html", context)
+
+def vendre_avion(request, player_id,avion_id):
+    player = get_object_or_404(Player, pk=player_id)
+    avion = get_object_or_404(Avion, pk=avion_id)
+    context = {"player": player, "avion": avion}
+    return HttpResponse(f"AVION VENDRE: contexte is = to {context}")
+    #return render(request, "aerial/aviation/acheter_avion.html", context)

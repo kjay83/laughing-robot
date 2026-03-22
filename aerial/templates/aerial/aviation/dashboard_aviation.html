@@ -4,7 +4,129 @@
 {% block content %}
 <div class="w-full bg-base-200">
     <div class="mb-2">
-        <p class="font-bold text-lg">LISTE AVIONS </p>
+        <p class="font-bold text-lg">LISTE DES AVIONS</p>
+    </div>
+    <div class="mb-4">
+        <a href="{% url 'aerial:acheter_avion_url' player.id %}" class="btn btn-primary w-full">Acheter un avion</a>
+    </div>
+
+    <div class="overflow-x-auto w-full bg-base-100 shadow-xl rounded-box p-4">
+        <table class="table table-zebra w-full">
+            <!-- En-tête -->
+            <thead>
+                <tr class="text-primary">
+                    <th>COMPAGNIE</th>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Modele</th>
+                    <th class="text-right">KM</th>
+                    <th>Statut</th>
+                    <th>Maintenir?</th>
+                    <th>Amorti?</th>
+                    <th>Date Achat</th>
+                    <th class="text-right">CashFlow</th>
+                    <th class="text-right">CashTotal</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            
+            <tbody>
+                {% for avion in avions %}
+                <tr class="hover:bg-base-300">
+                    <td><span class="font-mono text-xs">#{{ avion.compagnie.abbreviation }}</span></td>
+                    <td><span class="font-mono text-xs text-gray-500">#{{ avion.pk }}</span></td>
+                    <td>
+                        <div class="font-bold">{{ avion.nom_court }}</div>
+                    </td>
+                    <td>
+                        <div class="text-sm opacity-50">{{ avion.modele }}</div>
+                    </td>
+                    <td class="text-right font-semibold">
+                        {{ avion.km_parcourus|intcomma }} <span class="text-xs opacity-50">/{{ avion.modele.nb_km_max_par_exploitation|intcomma }}</span>
+                    </td>
+                    <td>{{ avion.statut }}</td>
+                    <td>{{ avion.est_a_maintenir }}</td>
+                    <td>{{ avion.est_amorti }}</td>
+                    <td>{{ avion.created_at|date:"d/m/Y H:i" }}</td>
+                    <td class="text-right font-semibold">
+                        {{ avion.cash_flow|intcomma }} <span class="text-xs opacity-50"></span>
+                    </td>
+                    <td class="text-right font-semibold">
+                        {{ avion.cash_genere|intcomma }} <span class="text-xs opacity-50"></span>
+                    </td>
+                    <!-- Actions -->
+                    <td class="text-center">
+                        <div class="join">
+                            <a href="{% url 'aerial:gerer_avion_url' player.id avion.id %}" class="btn btn-square btn-ghost btn-sm join-item">
+                                ✏️
+                            </a>
+                            <a href="{% url 'aerial:vendre_avion_url' player.id avion.id %}" class="btn btn-square btn-ghost btn-sm text-error join-item">
+                                🗑️
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center py-8 opacity-50">
+                        Aucun avion enregistré pour le moment.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- bloc recherche et nb de page a afficher-->
+    <div class="bg-base-200 p-4 rounded-box mb-6">
+        <form method="get" class="flex flex-col md:flex-row gap-4 justify-between items-end">
+            
+            <!-- Bloc Recherche -->
+            <div class="form-control w-full md:w-auto">
+                <label class="label"><span class="label-text-alt">Rechercher un avion</span></label>
+                <div class="join">
+                    <input type="text" name="q" value="{{ query }}" placeholder="Ex: SILVARI..." class="input input-bordered input-sm join-item w-full" />
+                    <button type="submit" class="btn btn-sm btn-primary join-item">🔍</button>
+                </div>
+            </div>
+
+            <!-- Bloc Affichage par page -->
+            <div class="form-control">
+                <label class="label"><span class="label-text-alt">Afficher</span></label>
+                <select name="per_page" onchange="this.form.submit()" class="select select-bordered select-sm">
+                    <option value="10" {% if par_page == 10 %}selected{% endif %}>10 par page</option>
+                    <option value="20" {% if par_page == 20 %}selected{% endif %}>20 par page</option>
+                    <option value="50" {% if par_page == 50 %}selected{% endif %}>50 par page</option>
+                </select>
+            </div>
+
+            <!-- Important : On ne met pas de input HIDDEN pour 'page' ici 
+                car si on change de recherche, on veut revenir à la page 1 -->
+        </form>
+    </div>
+
+
+    <!-- Pagination du tableau -->
+    <div class="flex flex-col items-center mt-4 gap-2">
+        <!-- Le compteur total -->
+        <div class="text-sm opacity-60">
+            Total : <span class="font-bold">{{ avions.paginator.count }}</span> avions enregistrés
+        </div>
+
+        <!-- boutons de pagination  -->
+        <div class="join">
+            {% if avions.has_previous %}
+                <a href="?page={{ avions.previous_page_number }}" class="join-item btn btn-sm">«</a>
+            {% endif %}
+            
+            <button class="join-item btn btn-sm bg-base-200">
+                Page {{ avions.number }} / {{ avions.paginator.num_pages }}
+            </button>
+            
+            {% if avions.has_next %}
+                <a href="?page={{ avions.next_page_number }}" class="join-item btn btn-sm">»</a>
+            {% endif %}
+        </div>
     </div>
 </div>
 {% endblock %}

@@ -83,7 +83,7 @@ class Player(models.Model):
     cash = models.DecimalField(default=0,max_digits=20, decimal_places=2)
     biens_immobiliers = models.ManyToManyField(BienImmobilier, blank=True, related_name='proprietaires')
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True,editable=False)
+    updated_at = models.DateTimeField(auto_now=True)
     
     @property
     def total_cash_flow(self):
@@ -141,7 +141,8 @@ class Entreprise(models.Model):
     date_creation = models.DateTimeField(auto_now_add=True)
     niveau = models.IntegerField(default=1)
     cash_flow = models.DecimalField(default=0,max_digits=20, decimal_places=2)
-    created_at = models.DateTimeField(auto_now_add=True)  
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.abbreviation} ({self.proprietaire.alias})"
@@ -202,6 +203,10 @@ class Avion(models.Model):
     statut = models.CharField(default=StatutAvion.HANGAR,
                                       choices=StatutAvion,
                                       max_length=25, blank=True, null=True) 
+    cash_flow = models.DecimalField(default=0,max_digits=20, decimal_places=2)
+    cash_genere = models.DecimalField(default=0,max_digits=20, decimal_places=2)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def verifier_amortissement(self) :
         if self.nb_heures_fonctionnement == self.modele.nb_km_max_par_exploitation :
@@ -230,7 +235,9 @@ class Hub(models.Model):
 class LigneAerienne(models.Model):
     trajet = models.ForeignKey(Trajet,on_delete=models.CASCADE)
     hub = models.ForeignKey(Hub,on_delete=models.CASCADE)
-    avions = models.ManyToManyField(Avion)
+    avions = models.ManyToManyField(Avion,related_name="lignes_aeriennes")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
         return f"{self.trajet}_{self.hub}"

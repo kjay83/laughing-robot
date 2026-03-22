@@ -20,7 +20,7 @@
                 <p class="badge badge-accent">{{player.cash|intcomma}} XAF</p>
             </div>
             <div class="space-x-2">
-                <a href="{% url 'aerial:dashboard_url' player.id %}" class="btn btn-primary btn-sm">Dashboard</a>
+                <a href="{% url 'aerial:dashboard_url_by_str' player.id %}" class="btn btn-primary btn-sm">Dashboard</a>
                 <a href="{% url 'aerial:detail_players_url' player.id %}" class="btn btn-primary btn-sm">Détails</a>
                 <a href="{% url 'aerial:modifier_players_url' player.id %}" class="btn btn-primary btn-sm">Modifier</a>
                 <a href="{% url 'aerial:supprimer_players_url' player.id %}" class="btn btn-primary btn-soft btn-sm">Supprimer</a>
