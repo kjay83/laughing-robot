@@ -266,7 +266,7 @@ class MiniJeuMangue(models.Model):
     
     @property
     def get_next_level_cash_flow(self) -> float:        
-        next_level_cash_flow =  self.cash_flow * self.get_coefficient_cash_flow(self.lvl+1)
+        next_level_cash_flow = float(self.cash_flow) * float(self.get_coefficient_cash_flow(self.lvl+1))
         return Decimal(str(next_level_cash_flow))
     
     def level_up(self):

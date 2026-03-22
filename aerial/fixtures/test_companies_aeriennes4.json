@@ -458,20 +458,6 @@
     }
 },
 {
-    "model": "aerial.player",
-    "pk": 13,
-    "fields": {
-        "nom": "Test3",
-        "prenom": "NON DEFINI",
-        "alias": "1",
-        "email": "aucun@fail.com",
-        "cash": "0.00",
-        "created_at": "2026-03-21T22:08:21.102Z",
-        "updated_at": "2026-03-21T22:08:21.102Z",
-        "biens_immobiliers": []
-    }
-},
-{
     "model": "aerial.entreprise",
     "pk": 1,
     "fields": {
