@@ -68,6 +68,10 @@ def dashboard_by_str(request, identifier):
 
 def dashboard_by_id(request, player_id):    
     player = get_object_or_404(Player.objects.prefetch_related('entreprises'), pk=player_id)
+    print(f"dans la vue dashboard_by_id : player cash avant maj = {player.cash} et cash_accumule = {player.cash_accumule}")
+    player.maj_cash()
+    player.refresh_from_db()  # Assure que player a les données les plus récentes de la base de données
+    print(f"dans la vue dashboard_by_id, APRES le refresh : player cash avant maj = {player.cash} et cash_accumule = {player.cash_accumule}")
     context = {"player": player}
     return render(request, "aerial/dashboard_player.html", context)
 
@@ -78,6 +82,8 @@ def detail_players(request,player_id):
 
 def minijeu_mangue(request, player_id):
     player = get_object_or_404(Player, pk=player_id)
+    player.maj_cash()
+    player.refresh_from_db()  # Assure que player a les données les plus récentes de la base de données
     minijeu, created = MiniJeuMangue.objects.get_or_create(player=player)
     context = {"player": player, "minijeu": minijeu}
     return render(request, "aerial/minijeu_mangue.html", context)
@@ -120,6 +126,8 @@ def clic_mangue_level_up(request, player_id):
     
 def dashboard_aviation(request, player_id):
     player = get_object_or_404(Player, pk=player_id)
+    player.maj_cash()
+    player.refresh_from_db()  # Assure que player a les données les plus récentes de la base de données
     compagnies_aeriennes = CompagnieAerienne.objects.prefetch_related('avions').filter(proprietaire__pk=player.pk)
     #print(f"Player {player.id} is {player.alias} and has {player.cash} cash")
     #print(f"Companies aeriennes for player {player.id}: {compagnies_aeriennes.count()}")

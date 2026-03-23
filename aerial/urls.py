@@ -13,7 +13,7 @@ urlpatterns = [
     path('player/<int:player_id>/supprimer', views.supprimer_players, name="supprimer_players_url"),
     
     #test d'url generique pour le dashboard qui accepte soit l'id soit l'alias du joueur
-    path('dashboard/<str:identifier>', views.dashboard_by_str, name="dashboard_url_by_str"),
+    #path('dashboard/<str:identifier>', views.dashboard_by_str, name="dashboard_url_by_str"),
 
     #page de depart pour les joueurs ,elle affiche des statistiques et des liens vers les minijeux
     path('joueur/<int:player_id>/dashboard', views.dashboard_by_id, name="dashboard_url_by_id"), 

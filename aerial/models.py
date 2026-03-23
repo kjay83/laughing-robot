@@ -8,12 +8,28 @@ NOTES POUR LES AVIONS:
 - une ligne aerienne ne peut avoir qu'un seul hub
 - seuls quelques villes peuvent etre des hub
 '''
+from django.utils import timezone
 from decimal import Decimal
 
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.core.exceptions import ValidationError
 import math
+from decimal import Decimal, ROUND_HALF_UP
+
+def clean_decimal(value, places=2):
+    """Arrondit proprement un nombre pour Django (max 2 décimales)"""
+    if value is None:
+        return Decimal('0.00')
+    
+    # On s'assure que c'est un objet Decimal
+    d_value = Decimal(str(value))
+    
+    # On définit le format (ex: '0.01' pour 2 décimales)
+    exponent = Decimal(10) ** -places
+    
+    # On arrondit (ROUND_HALF_UP est l'arrondi mathématique classique)
+    return d_value.quantize(exponent, rounding=ROUND_HALF_UP)
 
 class Pays(models.Model):
     nom = models.CharField(max_length=100,blank=True,null=True)
@@ -75,12 +91,23 @@ class BienImmobilier(models.Model):
     type_bien_immobilier = models.CharField(default=TypeBienImmobilier.VILLA, choices=TypeBienImmobilier, max_length=10, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+class Emploi(models.Model):
+    nom = models.CharField(default="CHOMEUR",max_length=200,blank=True,unique=True)
+    cash_flow = models.DecimalField(default=0,max_digits=20, decimal_places=2,blank=True,null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.nom}"
+
+
 class Player(models.Model):
     nom = models.CharField(max_length=200,blank=True,null=True)
     prenom = models.CharField(default='NON DEFINI',max_length=200,blank=True,null=True)
     alias = models.CharField(default='ALIAS',max_length=200,unique=True)
     email = models.EmailField(default='aucun@fail.com',max_length=200,blank=True,null=True)
     cash = models.DecimalField(default=0,max_digits=20, decimal_places=2)
+    emploi = models.ForeignKey('Emploi', on_delete=models.CASCADE, related_name='emploi',blank=True,null=True)
     biens_immobiliers = models.ManyToManyField(BienImmobilier, blank=True, related_name='proprietaires')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -88,22 +115,45 @@ class Player(models.Model):
     @property
     def total_cash_flow(self):
             """Cash flow généré/heure par toutes les entreprises"""
-            total = self.entreprises.aggregate(
+            total_cash_flow_entreprises:Decimal = self.entreprises.aggregate(
                 total=models.Sum('cash_flow')
-            )['total']
-            return total if total is not None else 0
+            )['total'] or Decimal('0.00')
+            total_cash_flow_emploi:Decimal = Decimal('0.00')
+            if self.emploi:
+                total_cash_flow_emploi = Decimal(self.emploi.cash_flow)
+            #otal_cash_flow_emploi = self.emploi.cash_flow if self.emploi else 0
+            total = total_cash_flow_entreprises + total_cash_flow_emploi
+            return clean_decimal(total) if total is not None else Decimal('0.00')
+    
+    @property
+    def cash_accumule(self) -> Decimal:
+        # 1. Calculer le temps écoulé depuis la dernière sauvegarde
+        maintenant = timezone.now()
+        secondes_ecoulees = (maintenant - self.updated_at).total_seconds()
+        
+        # 2. Calculer le gain (Cash_flow_horaire / 3600 secondes)
+        gain_temporel = (self.total_cash_flow / 3600) * Decimal(secondes_ecoulees)
+        
+        return clean_decimal(gain_temporel)
+    
+    """Met a jour le cash du joueur avec le gain temporel.
+    
+    Le gain temporel est calculé en fonction du temps écoulé depuis la dernière action
+    par le joueur
+    et de la somme des cash flows de toutes les entreprises et de l'emploi.
+    
+    Retourne le gain temporel.
+    """
+    def maj_cash(self):
+        gain = clean_decimal(self.cash_accumule)
+        print(f"in maj_cash :{self.cash} cash avant maj, gain temporel : {gain}")
+        self.cash += gain
+        self.save()
+        print(f"new cash value :{self.cash} ")
+        return gain
 
     def __str__(self):
         return f"{self.nom}"
-    
-    def initialize(self,starting_cash):
-        self.cash = starting_cash
-    
-    def receive(self,amount):
-        self.cash += amount
-    
-    def pay(self,amount):
-        self.cash -= amount
     
     def clean(self):
         """Valider que l'alias ne peut pas être identique à un ID existant"""
@@ -126,6 +176,7 @@ class Player(models.Model):
         """Valider avant de sauvegarder"""
         self.full_clean()
         super().save(*args, **kwargs)
+        #self.maj_cash()  # Met à jour le cash après chaque sauvegarde du joueur
 
 class Entreprise(models.Model):    
     # Attributs communs à TOUTES les entreprises (ex: capital, niveau)
@@ -141,6 +192,7 @@ class Entreprise(models.Model):
     date_creation = models.DateTimeField(auto_now_add=True)
     niveau = models.IntegerField(default=1)
     cash_flow = models.DecimalField(default=0,max_digits=20, decimal_places=2)
+    cash_genere = models.DecimalField(default=0,max_digits=20, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -236,6 +288,8 @@ class LigneAerienne(models.Model):
     trajet = models.ForeignKey(Trajet,on_delete=models.CASCADE)
     hub = models.ForeignKey(Hub,on_delete=models.CASCADE)
     avions = models.ManyToManyField(Avion,related_name="lignes_aeriennes")
+    cash_flow = models.DecimalField(default=0,max_digits=20, decimal_places=2)
+    cash_genere = models.DecimalField(default=0,max_digits=20, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -280,7 +334,7 @@ class MiniJeuMangue(models.Model):
         current_cost = self.get_level_up_cost
     
         if self.player.cash >= current_cost:
-            self.player.cash -= current_cost
+            self.player.cash -= clean_decimal(current_cost)
 
             # On applique le nouveau coefficient de gain
             self.cash_flow = self.get_next_level_cash_flow

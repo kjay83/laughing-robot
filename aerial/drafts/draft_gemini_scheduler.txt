@@ -1,0 +1,57 @@
+Pour un Idle Game, l'erreur classique est de vouloir faire tourner un script en boucle qui ajoute +1 toutes les secondes. C'est impossible à gérer pour un serveur si tu as 1000 joueurs.
+La solution professionnelle repose sur une approche mathématique et temporelle.
+1. Le concept : "Le temps est la variable"
+Au lieu de stocker uniquement le cash, tu dois stocker le moment précis de la dernière mise à jour.
+Dans ton modèle Entreprise :
+python
+class Entreprise(models.Model):
+    cash_accumule = models.DecimalField(max_digits=20, decimal_places=2, default=0)
+    cash_flow_par_heure = models.DecimalField(max_digits=20, decimal_places=2)
+    last_update = models.DateTimeField(auto_now_add=True) # Le moment du dernier calcul
+
+    @property
+    def current_cash(self):
+        # 1. Calculer le temps écoulé depuis la dernière sauvegarde
+        maintenant = timezone.now()
+        secondes_ecoulees = (maintenant - self.last_update).total_seconds()
+        
+        # 2. Calculer le gain (Cash_flow_horaire / 3600 secondes)
+        gain_temporel = (self.cash_flow_par_heure / 3600) * Decimal(secondes_ecoulees)
+        
+        return self.cash_accumule + gain_temporel
+Utilisez le code avec précaution.
+
+2. Quand le joueur est déconnecté (Le calcul "AFK")
+Quand le joueur revient après 10 heures :
+Ta vue appelle entreprise.current_cash.
+La formule calcule : (10h * cash_flow).
+Tu affiches le résultat. Le joueur a l'impression que l'argent a grimpé pendant son absence, mais le serveur n'a rien fait pendant ces 10 heures.
+3. Quand le joueur est connecté (Le "Temps Réel")
+Pour que le chiffre grimpe sous ses yeux sans recharger la page, on utilise du JavaScript (ou HTMX avec un timer) :
+Côté Client (JS) : Tu envoies le cash_flow_par_seconde au navigateur. Un petit script JS ajoute visuellement cette valeur au compteur toutes les 100ms. C'est purement visuel (pour le plaisir des yeux).
+Côté Serveur (Django) : Chaque fois que le joueur fait une action (acheter une amélioration, cliquer), tu sauvegardes le montant réel en base et tu réinitialises last_update à now().
+4. Sécuriser la récolte
+Pour éviter que le joueur ne triche en modifiant le chiffre en JS, crée une vue recolter_cash :
+python
+def recolter_cash(request, ent_id):
+    ent = Entreprise.objects.get(pk=ent_id)
+    # On fige le gain calculé mathématiquement
+    ent.cash_accumule = ent.current_cash 
+    ent.last_update = timezone.now()
+    ent.save()
+    return JsonResponse({"status": "ok"})
+Utilisez le code avec précaution.
+
+Pourquoi c'est le meilleur design ?
+Performance : Ton serveur ne travaille que quand le joueur clique.
+Précision : Que le joueur revienne après 5 minutes ou 5 ans, le calcul sera exact à la seconde près.
+Veux-tu que je t'aide à écrire le petit script JavaScript pour faire défiler les chiffres de manière fluide sur ton interface ?
+Mise au point scannable :
+Stocker last_update pour chaque entreprise.
+Calculer le gain par différence de temps (Delta).
+Utiliser le JS pour l'animation visuelle uniquement.
+Valider côté serveur à chaque action importante.
+
+
+
+

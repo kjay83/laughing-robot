@@ -388,6 +388,106 @@
     }
 },
 {
+    "model": "aerial.emploi",
+    "pk": 1,
+    "fields": {
+        "nom": "Agent de Surface",
+        "cash_flow": "94.00",
+        "created_at": "2026-03-23T16:43:30.697Z",
+        "updated_at": "2026-03-23T16:43:30.697Z"
+    }
+},
+{
+    "model": "aerial.emploi",
+    "pk": 2,
+    "fields": {
+        "nom": "Gardien",
+        "cash_flow": "71.16",
+        "created_at": "2026-03-23T16:43:54.725Z",
+        "updated_at": "2026-03-23T16:43:54.725Z"
+    }
+},
+{
+    "model": "aerial.emploi",
+    "pk": 3,
+    "fields": {
+        "nom": "Comptable",
+        "cash_flow": "189.75",
+        "created_at": "2026-03-23T16:44:16.074Z",
+        "updated_at": "2026-03-23T16:44:16.074Z"
+    }
+},
+{
+    "model": "aerial.emploi",
+    "pk": 4,
+    "fields": {
+        "nom": "Secretaire",
+        "cash_flow": "94.87",
+        "created_at": "2026-03-23T16:44:34.604Z",
+        "updated_at": "2026-03-23T16:44:34.604Z"
+    }
+},
+{
+    "model": "aerial.emploi",
+    "pk": 5,
+    "fields": {
+        "nom": "Commercial",
+        "cash_flow": "250.00",
+        "created_at": "2026-03-23T16:45:14.624Z",
+        "updated_at": "2026-03-23T16:45:14.624Z"
+    }
+},
+{
+    "model": "aerial.emploi",
+    "pk": 6,
+    "fields": {
+        "nom": "Agent Logistique",
+        "cash_flow": "190.00",
+        "created_at": "2026-03-23T16:45:34.197Z",
+        "updated_at": "2026-03-23T16:45:34.197Z"
+    }
+},
+{
+    "model": "aerial.emploi",
+    "pk": 7,
+    "fields": {
+        "nom": "Chef Comptable",
+        "cash_flow": "474.38",
+        "created_at": "2026-03-23T16:45:55.940Z",
+        "updated_at": "2026-03-23T16:45:55.940Z"
+    }
+},
+{
+    "model": "aerial.emploi",
+    "pk": 8,
+    "fields": {
+        "nom": "Avocat",
+        "cash_flow": "948.76",
+        "created_at": "2026-03-23T16:46:18.354Z",
+        "updated_at": "2026-03-23T16:46:18.354Z"
+    }
+},
+{
+    "model": "aerial.emploi",
+    "pk": 9,
+    "fields": {
+        "nom": "Medecin",
+        "cash_flow": "1100.00",
+        "created_at": "2026-03-23T16:46:24.754Z",
+        "updated_at": "2026-03-23T16:46:24.754Z"
+    }
+},
+{
+    "model": "aerial.emploi",
+    "pk": 10,
+    "fields": {
+        "nom": "CHOMEUR",
+        "cash_flow": "0.00",
+        "created_at": "2026-03-23T16:47:55.970Z",
+        "updated_at": "2026-03-23T16:47:55.970Z"
+    }
+},
+{
     "model": "aerial.player",
     "pk": 1,
     "fields": {
@@ -396,8 +496,9 @@
         "alias": "p1halddj",
         "email": "hald@weje.com",
         "cash": "51.00",
+        "emploi": 7,
         "created_at": "2026-03-20T17:23:01.239Z",
-        "updated_at": "2026-03-22T22:33:32.658Z",
+        "updated_at": "2026-03-23T16:55:21.288Z",
         "biens_immobiliers": []
     }
 },
@@ -410,8 +511,9 @@
         "alias": "p2rbenPlan",
         "email": "rueb@planga.com",
         "cash": "13.64",
+        "emploi": 7,
         "created_at": "2026-03-20T17:24:01.482Z",
-        "updated_at": "2026-03-22T13:35:00.663Z",
+        "updated_at": "2026-03-23T16:53:09.281Z",
         "biens_immobiliers": []
     }
 },
@@ -424,6 +526,7 @@
         "alias": "p1",
         "email": "aucun@fail.com",
         "cash": "0.00",
+        "emploi": null,
         "created_at": "2026-03-20T17:58:14.199Z",
         "updated_at": "2026-03-20T17:58:14.199Z",
         "biens_immobiliers": []
@@ -438,6 +541,7 @@
         "alias": "p2",
         "email": "aucun@fail.com",
         "cash": "0.00",
+        "emploi": null,
         "created_at": "2026-03-20T17:58:14.343Z",
         "updated_at": "2026-03-20T17:58:14.343Z",
         "biens_immobiliers": []
@@ -452,6 +556,7 @@
         "alias": "john_doe",
         "email": "aucun@fail.com",
         "cash": "0.00",
+        "emploi": null,
         "created_at": "2026-03-21T22:04:03.949Z",
         "updated_at": "2026-03-21T22:04:03.949Z",
         "biens_immobiliers": []
@@ -468,6 +573,7 @@
         "date_creation": "2026-03-21T10:28:32.014Z",
         "niveau": 1,
         "cash_flow": "0.00",
+        "cash_genere": "0.00",
         "created_at": "2026-03-21T10:28:32.014Z",
         "updated_at": "2026-03-22T22:52:13.431Z"
     }
@@ -483,6 +589,7 @@
         "date_creation": "2026-03-21T10:28:43.249Z",
         "niveau": 1,
         "cash_flow": "0.00",
+        "cash_genere": "0.00",
         "created_at": "2026-03-21T10:28:43.249Z",
         "updated_at": "2026-03-22T22:52:13.431Z"
     }
@@ -498,6 +605,7 @@
         "date_creation": "2026-03-21T10:29:22.116Z",
         "niveau": 1,
         "cash_flow": "0.00",
+        "cash_genere": "0.00",
         "created_at": "2026-03-21T10:29:22.116Z",
         "updated_at": "2026-03-22T22:52:13.431Z"
     }
